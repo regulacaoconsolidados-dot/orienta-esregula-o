@@ -1,0 +1,2993 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Portal de Regulação - CMC Contagem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0A58CA;
+            --primary-dark: #003A99;
+            --primary-darker: #0A1A3A;
+            --primary-light: #E8F0FE;
+            --primary-soft: #D4E4FF;
+            --secondary: #6C757D;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --text: #1A2332;
+            --text-light: #5A6B7C;
+            --bg: #F0F4FA;
+            --white: #FFFFFF;
+            --shadow: 0 8px 30px rgba(0,0,0,0.08);
+            --shadow-hover: 0 16px 50px rgba(10,88,202,0.12);
+            --shadow-3d: 0 4px 0 #B8CBE0, 0 8px 30px rgba(10,88,202,0.08);
+            --shadow-3d-hover: 0 6px 0 #A0B8D4, 0 16px 50px rgba(10,88,202,0.15);
+            --radius: 14px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        body.loaded {
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== MENU LATERAL FLUTUANTE ===== */
+        .floating-panel {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) translateX(-320px);
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 8px 32px rgba(0,0,0,0.15));
+        }
+
+        .floating-panel.open {
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .panel-content {
+            background: var(--white);
+            width: 320px;
+            border-radius: 0 16px 16px 0;
+            padding: 20px 18px 22px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .panel-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .panel-content::-webkit-scrollbar-track {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+        .panel-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid var(--primary-light);
+            margin-bottom: 6px;
+        }
+
+        .panel-header i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .panel-header span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: var(--primary-darker);
+            text-transform: uppercase;
+        }
+
+        .panel-links {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .panel-link-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--white);
+            color: var(--text);
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            line-height: 1.35;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid #e9edf2;
+        }
+
+        .panel-link-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateX(4px);
+            color: var(--primary-dark);
+            text-decoration: none;
+        }
+
+        .panel-link-btn i {
+            font-size: 0.95rem;
+            flex-shrink: 0;
+            color: var(--primary);
+            width: 20px;
+            text-align: center;
+        }
+
+        .panel-tab {
+            background: var(--primary-darker);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 16px 8px;
+            border-radius: 0 12px 12px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-width: 32px;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .panel-tab:hover {
+            background: var(--primary-dark);
+        }
+
+        .panel-tab .tab-arrow {
+            font-size: 0.8rem;
+            transition: transform 0.4s ease;
+        }
+
+        .floating-panel.open .panel-tab .tab-arrow {
+            transform: rotate(180deg);
+        }
+
+        .panel-tab .tab-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        /* ===== HEADER ===== */
+        .header-modern {
+            background: linear-gradient(145deg, var(--primary-darker) 0%, var(--primary-dark) 60%, var(--primary) 100%);
+            padding: 0 24px;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .header-modern::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 15% 30%, rgba(255,255,255,0.06) 0%, transparent 60%),
+                radial-gradient(circle at 85% 70%, rgba(255,255,255,0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(255,255,255,0.03) 0%, transparent 40%);
+            z-index: 0;
+        }
+
+        .header-modern .container {
+            position: relative;
+            z-index: 1;
+            max-width: 92%;
+            margin: 0 auto;
+            padding: 28px 0 18px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-brand .logo-icon {
+            width: 54px;
+            height: 54px;
+            background: rgba(255,255,255,0.12);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+
+        .header-brand h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .header-brand .subtitle {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 400;
+            display: block;
+        }
+
+        .header-brand .subtitle-author {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            font-weight: 400;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .header-info {
+            text-align: right;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .header-info strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .header-info .badge-header {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #fff;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .header-quote {
+            background: rgba(255,255,255,0.04);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 8px 0;
+            text-align: center;
+            font-style: italic;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== NAV ===== */
+        .nav-modern {
+            background: var(--white);
+            border-bottom: 3px solid var(--primary);
+            padding: 0 16px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+        }
+
+        .nav-modern .container {
+            max-width: 92%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow-x: auto;
+            padding: 6px 0;
+            scrollbar-width: none;
+        }
+
+        .nav-modern .container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-modern .nav-scroll {
+            display: flex;
+            gap: 3px;
+            align-items: center;
+            flex-wrap: nowrap;
+            width: 100%;
+        }
+
+        .nav-modern .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            white-space: nowrap;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background: transparent;
+            font-family: inherit;
+            position: relative;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-modern .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-modern .nav-link:hover::after {
+            width: 60%;
+        }
+
+        .nav-modern .nav-link.active::after {
+            width: 60%;
+        }
+
+        .nav-modern .nav-link i {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            color: var(--text-light);
+        }
+
+        .nav-modern .nav-link:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-color: var(--primary-soft);
+        }
+
+        .nav-modern .nav-link:hover i {
+            color: var(--primary);
+            opacity: 0.8;
+        }
+
+        .nav-modern .nav-link.active {
+            background: var(--primary-darker);
+            color: #fff;
+            border-color: var(--primary-darker);
+            box-shadow: 0 4px 12px rgba(10,26,58,0.25);
+        }
+
+        .nav-modern .nav-link.active i {
+            opacity: 1;
+            color: #fff;
+        }
+
+        /* ===== QUICK LINKS ===== */
+        .quick-links-wrapper {
+            max-width: 92%;
+            margin: 6px auto 0;
+            padding: 8px 20px 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            background: rgba(10,88,202,0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(10,88,202,0.06);
+        }
+
+        .quick-links-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-links {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            justify-content: flex-start;
+            padding-bottom: 4px;
+        }
+
+        .quick-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 14px;
+            background: var(--white);
+            color: var(--text);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: 1px solid #e5e9ef;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        }
+
+        .quick-link-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(10,88,202,0.12);
+            color: var(--primary-dark);
+        }
+
+        .quick-link-btn i {
+            font-size: 0.7rem;
+            color: var(--primary);
+        }
+
+        /* ===== SEARCH ===== */
+        .search-section {
+            max-width: 92%;
+            margin: 14px auto 0;
+            padding: 0 20px 10px;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #8a9aa8;
+            font-size: 0.9rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 1rem 9px 2.8rem;
+            border: 2px solid #e5e9ef;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px rgba(10,88,202,0.15);
+        }
+
+        .clear-inline {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #6c757d;
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .clear-inline:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .clear-inline.visible {
+            display: flex;
+        }
+
+        /* ===== MAIN ===== */
+        .main-content {
+            max-width: 92%;
+            margin: 0 auto;
+            padding: 8px 24px 50px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 22px;
+            border-left: 4px solid var(--primary);
+            padding-left: 16px;
+        }
+
+        /* ===== CARDS COM SOMBREAMENTO 3D ===== */
+        .card-modern {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-3d);
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-modern:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-3d-hover);
+        }
+
+        .card-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card-modern:hover::before {
+            opacity: 1;
+        }
+
+        .card-modern::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(10,88,202,0.03) 0%, transparent 60%);
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+
+        .card-modern:hover::after {
+            opacity: 1;
+        }
+
+        .card-modern .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-modern .card-header i {
+            font-size: 1.3rem;
+            color: var(--primary);
+            width: 34px;
+            text-align: center;
+            background: var(--primary-light);
+            padding: 6px;
+            border-radius: 10px;
+        }
+
+        .card-modern .card-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .card-modern .card-header .tag {
+            margin-left: auto;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 20px;
+            background: var(--primary-light);
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .card-modern p {
+            color: var(--text-light);
+            line-height: 1.7;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-modern ul, .card-modern ol {
+            margin-left: 18px;
+            color: var(--text-light);
+            line-height: 1.8;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-modern li {
+            margin-bottom: 3px;
+        }
+
+        .card-modern li strong {
+            color: var(--text);
+        }
+
+        .card-modern .info-highlight {
+            background: var(--primary-light);
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 12px 0;
+            border-left: 4px solid var(--primary);
+            font-size: 0.85rem;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-modern .info-highlight strong {
+            color: var(--primary-dark);
+        }
+
+        /* ===== GRID ===== */
+        .grid-modern {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin: 20px 0;
+        }
+
+        .grid-modern .card-modern {
+            margin-bottom: 0;
+        }
+
+        /* ===== ACCORDION ===== */
+        .accordion-modern {
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 8px;
+            background: var(--white);
+            box-shadow: var(--shadow-3d);
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: var(--transition);
+        }
+
+        .accordion-modern:hover {
+            box-shadow: var(--shadow-3d-hover);
+            transform: translateY(-2px);
+        }
+
+        .accordion-modern .accordion-header {
+            padding: 13px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: var(--transition);
+            background: var(--white);
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+            gap: 12px;
+        }
+
+        .accordion-modern .accordion-header:hover {
+            background: var(--primary-light);
+        }
+
+        .accordion-modern .accordion-header .icon-left {
+            color: var(--primary);
+            font-size: 1rem;
+            width: 22px;
+            flex-shrink: 0;
+        }
+
+        .accordion-modern .accordion-header .accordion-icon {
+            font-size: 0.85rem;
+            transition: transform 0.3s ease;
+            color: var(--text-light);
+            flex-shrink: 0;
+        }
+
+        .accordion-modern .accordion-header .accordion-icon.active {
+            transform: rotate(180deg);
+        }
+
+        .accordion-modern .accordion-content {
+            display: none;
+            padding: 0 18px 18px;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            background: #fafcfe;
+        }
+
+        .accordion-modern .accordion-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .accordion-modern .accordion-content ul,
+        .accordion-modern .accordion-content ol {
+            margin-left: 18px;
+            color: var(--text-light);
+            line-height: 1.8;
+            font-size: 0.9rem;
+        }
+
+        .accordion-modern .accordion-content li {
+            margin-bottom: 3px;
+        }
+
+        .accordion-modern .accordion-content .badge-priority {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-right: 4px;
+        }
+
+        .badge-p0 { background: #FEE2E2; color: #DC2626; }
+        .badge-p1 { background: #FEF3C7; color: #D97706; }
+        .badge-p2 { background: #D1FAE5; color: #059669; }
+
+        /* ===== BOTÕES ===== */
+        .btn-modern {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: 0 4px 16px rgba(10,88,202,0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-modern:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(10,88,202,0.3);
+        }
+
+        .btn-modern-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-modern-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* ===== LINKS GRID ===== */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+        }
+
+        .link-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--white);
+            border: 2px solid #e5e9ef;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            min-height: 48px;
+        }
+
+        .link-button:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(10,88,202,0.1);
+            color: var(--primary);
+        }
+
+        .link-button i {
+            font-size: 1.1rem;
+            color: var(--primary);
+            flex-shrink: 0;
+            width: 24px;
+            text-align: center;
+        }
+
+        .link-button span {
+            line-height: 1.3;
+        }
+
+        .highlight-button {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+            border-color: var(--primary-light);
+        }
+
+        .links-section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .links-section-title i {
+            color: var(--primary);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-modern {
+            background: var(--text);
+            color: rgba(255,255,255,0.5);
+            padding: 24px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .footer-modern .container {
+            max-width: 92%;
+            margin: 0 auto;
+        }
+
+        .footer-modern p {
+            font-size: 0.8rem;
+        }
+
+        .footer-modern strong {
+            color: #fff;
+        }
+
+        /* ===== SCROLL ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-darker);
+            color: #fff;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(10,26,58,0.25);
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            font-size: 1rem;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: scale(1.08);
+            background: var(--primary-dark);
+        }
+
+        /* ===== SEARCH HIDDEN ===== */
+        .search-hidden {
+            display: none !important;
+        }
+        .search-match mark {
+            background: #fde68a;
+            padding: 1px 3px;
+            border-radius: 3px;
+            color: #1a1a2e;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .header-brand h1 { font-size: 1.2rem; }
+            .header-info { font-size: 0.7rem; }
+            .panel-content { width: 290px; }
+            .main-content { padding: 8px 16px 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .header-modern .container {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 14px 0 10px;
+            }
+
+            .header-info {
+                text-align: left;
+                width: 100%;
+            }
+
+            .header-brand .logo-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+
+            .header-brand h1 {
+                font-size: 1rem;
+            }
+
+            .header-quote {
+                font-size: 0.7rem;
+                padding: 6px 0;
+            }
+
+            .nav-modern .container {
+                padding: 4px 0;
+            }
+
+            .nav-modern .nav-link {
+                padding: 6px 10px;
+                font-size: 0.65rem;
+            }
+
+            .nav-modern .nav-link i {
+                font-size: 0.65rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .section-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .card-modern {
+                padding: 14px 16px;
+            }
+
+            .card-modern .card-header h3 {
+                font-size: 0.9rem;
+            }
+
+            .grid-modern {
+                grid-template-columns: 1fr;
+            }
+
+            .accordion-modern .accordion-header {
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .btn-modern {
+                padding: 8px 18px;
+                font-size: 0.75rem;
+            }
+
+            .panel-content { width: 280px; max-height: 70vh; padding: 14px 14px 18px; }
+            .panel-tab { padding: 12px 6px; min-width: 26px; }
+            .panel-tab .tab-label { font-size: 0.55rem; }
+            .panel-link-btn { font-size: 0.7rem; padding: 8px 12px; }
+
+            .scroll-top {
+                width: 34px;
+                height: 34px;
+                font-size: 0.8rem;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            .quick-link-btn {
+                font-size: 0.6rem;
+                padding: 4px 12px;
+            }
+            .quick-link-btn i {
+                font-size: 0.6rem;
+            }
+            .main-content { padding: 8px 12px 30px; }
+        }
+
+        @media (max-width: 480px) {
+            .header-brand .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+
+            .header-brand h1 {
+                font-size: 0.85rem;
+            }
+
+            .header-brand .subtitle {
+                font-size: 0.6rem;
+            }
+
+            .nav-modern .nav-link {
+                padding: 4px 8px;
+                font-size: 0.55rem;
+                gap: 3px;
+            }
+
+            .nav-modern .nav-link i {
+                font-size: 0.55rem;
+            }
+
+            .main-content {
+                padding: 8px 8px 30px;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            .card-modern {
+                padding: 10px 12px;
+            }
+
+            .accordion-modern .accordion-header {
+                padding: 8px 10px;
+                font-size: 0.7rem;
+                gap: 6px;
+            }
+
+            .accordion-modern .accordion-content {
+                padding: 0 10px 12px;
+            }
+
+            .search-box input {
+                padding: 8px 1rem 8px 2.2rem;
+                font-size: 0.8rem;
+            }
+
+            .panel-content { width: 280px; padding: 10px 12px 14px; }
+            .panel-tab { padding: 8px 5px; min-width: 22px; }
+            .panel-tab .tab-label { font-size: 0.5rem; }
+            .panel-link-btn { font-size: 0.65rem; padding: 6px 10px; gap: 5px; }
+
+            .quick-links-wrapper {
+                padding: 4px 10px 2px;
+            }
+            .quick-link-btn {
+                font-size: 0.55rem;
+                padding: 3px 10px;
+                gap: 3px;
+            }
+            .quick-link-btn i {
+                font-size: 0.55rem;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== MENU LATERAL FLUTUANTE — NOTAS TÉCNICAS ===== -->
+<div class="floating-panel" id="floatingPanel">
+    <div class="panel-content">
+        <div class="panel-header">
+            <i class="fas fa-file-medical-alt"></i>
+            <span>Notas Técnicas</span>
+        </div>
+        <div class="panel-links">
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Central%20de%20marca%C3%A7%C3%A3o/NT%2025%20-%202025%20-%20Regula%C3%A7%C3%A3o%20de%20Consultas%20Especializadas%20via%20sistema%20VIVVER.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT 25/2025 — Consulta Especializada
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Aten%C3%A7%C3%A3o%20Primaria/INFORMES,%20NORMAS%20E%20NOTAS/NOTA%20TECNICA%20032-%20TELECONSULTORIA%20E%20REGULA%C3%87%C3%83O%20PARA%20ENCAMINHAMENTO.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT Conjunta 032 — Teleconsultoria
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Central%20de%20marca%C3%A7%C3%A3o/NT%2003%20-%202019%20-%20Norma%20T%C3%A9cnica%20Especialidades%20Cir%C3%BArgicas%20-%20revis%C3%A3o%2012_2024.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT 03/2019 — Especialidades Cirúrgicas
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Nota%20tecnica%20conjunta/NT%2024%20-%202025%20-%20Registro%20e%20Envio%20de%20Relat%C3%B3rio%20para%20Reclassifica%C3%A7%C3%A3o%20de%20Prioridade(2).pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT 24/2025 — Relatório de Prioridade
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Aten%C3%A7%C3%A3o%20Especializada/NOTA%20INFORMATIVA%2001_2025%20-%20AGENDAMENTO%20INFECTOLOGIA%20SAE.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NI 01/2025 — Agendamentos / SAE
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Central%20de%20marca%C3%A7%C3%A3o/NT%2008%20-%202023%20-%20Crit%C3%A9rios%20de%20encaminhamento%20ao%20Amb%20endoc%20e%20obeso%20grave%20em%20BH(1).pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT 08/2023 — Amb. Endoc. Obesidade Grave
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Central%20de%20marca%C3%A7%C3%A3o/NT%2026%20-%202025%20-%20Infertilidade%20Conjugal(1).pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT 26/2025 — Infertilidade Conjugal
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Central%20de%20marca%C3%A7%C3%A3o/NT%2011%20-%202022%20-%20Aproveitamento%20de%20vagas%20de%20Consultas%20Especializadas.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT 11/2022 — Aproveitamento de Vagas
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Oncologia/NT%2002%20-%202020%20-%20Norma%20T%C3%A9cnica%20Oncologia.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> NT 02/2020 — Oncologia
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Central%20de%20marca%C3%A7%C3%A3o/Formul%C3%A1rio%20para%20acompanhamento%20da%20obesidade.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> Formulário — Acompanhamento Obesidade
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/imgeditor/file/Regula%C3%A7%C3%A3o/Central%20de%20marca%C3%A7%C3%A3o/Ficha%20de%20encaminhamento%20para%20a%20Cl%C3%ADnica%20de%20Dor.pdf" target="_blank" rel="noopener">
+                <i class="fas fa-file-pdf"></i> Ficha — Clínica da Dor
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/informes--notas-e-normas/#anc-ap" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> Informes / Normas e Notas
+            </a>
+        </div>
+    </div>
+    <button class="panel-tab" id="panelToggle" aria-label="Abrir/Fechar menu de Notas Técnicas">
+        <i class="fas fa-chevron-right tab-arrow"></i>
+        <span class="tab-label">Notas Técnicas</span>
+    </button>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="header-modern">
+    <div class="container">
+        <div class="header-brand">
+            <div class="logo-icon"><i class="fas fa-stethoscope"></i></div>
+            <div>
+                <h1>Diretoria de Regulação do Acesso</h1>
+                <span class="subtitle">Fluxo de Agendamento de consultas na Atenção Especializada</span>
+                <span class="subtitle-author">Página criada por Ana Paula Araújo da Silva • Assistente Administrativo • Matr. 201704</span>
+            </div>
+        </div>
+        <div class="header-info">
+            <strong>Diretora: </strong><br>
+             <strong>Referência do setor: Enfermeira Giovanna</strong><br>
+            <i class="fas fa-phone" style="color: rgba(255,255,255,0.4);"></i> Refer. Distrital na CMC: (31) 3198-6756
+            <div class="badge-header"><i class="far fa-calendar-alt"></i> Atualizado 2026</div>
+        </div>
+    </div>
+    <div class="header-quote">
+        <i class="fas fa-quote-left"></i> Informações técnicas para os profissionais da saúde <i class="fas fa-quote-right"></i>
+    </div>
+</header>
+
+    <!-- ===== NAV ===== -->
+<nav class="nav-modern">
+    <div class="container">
+        <div class="nav-scroll">
+            <button class="nav-link active" data-section="inicio"><i class="fas fa-home"></i> Início</button>
+            <button class="nav-link" data-section="fluxos"><i class="fas fa-sitemap"></i> Fluxos</button>
+            <button class="nav-link" data-section="especialidades"><i class="fas fa-list-ul"></i> Especialidades</button>
+            <button class="nav-link" data-section="cirurgicas"><i class="fas fa-scalpel"></i> Cirurgias</button>
+            <button class="nav-link" data-section="oftalmologia"><i class="fas fa-eye"></i> Oftalmologia</button>
+            <button class="nav-link" data-section="bloqueio"><i class="fas fa-brain"></i> Bloqueio</button>
+            <button class="nav-link" data-section="odontologia"><i class="fas fa-tooth"></i> Odontologia</button>
+            <button class="nav-link" data-section="infertilidade"><i class="fas fa-baby"></i> Infertilidade</button>
+            <button class="nav-link" data-section="endocrinologia"><i class="fas fa-weight-scale"></i> Obesidade</button>
+            <button class="nav-link" data-section="infectologia"><i class="fas fa-virus"></i> Infectologia</button>
+            <button class="nav-link" data-section="mamografia"><i class="fas fa-x-ray"></i> Mamografia</button>
+            <button class="nav-link" data-section="teleconsultoria"><i class="fas fa-video"></i> Telecons.</button>
+            <button class="nav-link" data-section="reclassificacao"><i class="fas fa-arrow-up"></i> Reclass.</button>
+            <button class="nav-link" data-section="oncologia"><i class="fas fa-ribbon"></i> Oncologia</button>
+            <button class="nav-link" data-section="linksuteis"><i class="fas fa-link"></i> Links Úteis</button>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== QUICK LINKS ===== -->
+<div class="quick-links-wrapper">
+    <div class="quick-links">
+        <a href="https://compartilhacmc-commits.github.io/pendenciasgeral/" class="quick-link-btn" target="_blank">
+            <i class="fas fa-exclamation-triangle"></i> Pendências
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1_WJhJQQXcxn0Yucyr_rv_HuKs7wc3p4oeb69oyhoPU4/edit?gid=119359330#gid=119359330" class="quick-link-btn" target="_blank">
+            <i class="fas fa-list-ul"></i> Oferta Teleconsulta
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/11X7DQcngdN51yFYodEWBmMCc8Pi-YFbgQ4IQ7Ca93IU/edit?gid=1603937153#gid=1603937153" class="quick-link-btn" target="_blank">
+            <i class="fas fa-list-ul"></i> Consolidado Teleconsulta
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1_WJhJQQXcxn0Yucyr_rv_HuKs7wc3p4oeb69oyhoPU4/edit?gid=0#gid=0" class="quick-link-btn" target="_blank">
+            <i class="fas fa-user-md"></i> Reaproveitamento
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1rdG5GYB9tl57CUchHd_LMAO_qftSD_S4ySH5vernoTk/edit?gid=0#gid=0" class="quick-link-btn" target="_blank">
+            <i class="fas fa-list-ul"></i> Baixa Demanda
+        </a>
+        <a href="https://compartilhacmc-commits.github.io/profissionaisnarede/" class="quick-link-btn" target="_blank">
+            <i class="fas fa-user-md"></i> Médicos Ativos
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1s_HDG2-eBdYVaHdw_4e2q2ORuUePdZuLJQmIT7Z-esI/edit?pli=1&gid=0#gid=0" class="quick-link-btn" target="_blank">
+            <i class="fas fa-list-ul"></i> Exames Sem Prestador
+        </a>
+        <a href="https://regulacaoconsolidados-dot.github.io/contatosdasubs/" class="quick-link-btn" target="_blank">
+            <i class="fas fa-phone-alt"></i> Telefones Unidades
+        </a>
+        <a href="https://app.powerbi.com/view?r=eyJrIjoiYTRiZDcyZWYtMzAwNS00NmYyLTk3N2EtYWEwYTk2NTFhMmY1IiwidCI6ImFlODYzMzdlLTU3NWUtNDMzMC05NDc2LTkzZGU2ODJiMDAyMCJ9" class="quick-link-btn" target="_blank">
+            <i class="fas fa-map-marked-alt"></i> Área de Abrangência
+        </a>
+        <a href="https://portal.contagem.mg.gov.br/nota-tecnica" class="quick-link-btn" target="_blank">
+            <i class="fas fa-file-alt"></i> Notas Técnicas Prefeitura
+        </a>
+        <a href="#" class="quick-link-btn" onclick="navigateTo('linksuteis'); return false;">
+            <i class="fas fa-link"></i> Links Úteis
+        </a>
+    </div>
+</div>
+
+<!-- ===== SEARCH ===== -->
+<div class="search-section">
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar na página...">
+        <button id="clearInlineButton" class="clear-inline" type="button" aria-label="Limpar pesquisa" title="Limpar">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<main class="main-content">
+
+    <!-- ============ INÍCIO ============ -->
+    <section id="inicio" class="section active">
+        <h2 class="section-title"><i class="fas fa-home"></i> Bem-vindo ao Portal</h2>
+        <p class="section-subtitle">Ferramenta construída com o objetivo de apresentar os fluxos de regulação formalizados para as consultas especializadas no município de Contagem.</p>
+
+        <div class="grid-modern">
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-sitemap"></i>
+                    <h3>Fluxos de Regulação</h3>
+                    <span class="tag">NT 25/2025</span>
+                </div>
+                <p>Entenda o processo completo: teleconsultoria, VIVVER, regulação e agendamento.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('fluxos')">
+                    <i class="fas fa-arrow-right"></i> Explorar
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-list-ul"></i>
+                    <h3>Especialidades</h3>
+                    <span class="tag">26+</span>
+                </div>
+                <p>Consulte todas as especialidades reguladas e seus critérios de encaminhamento.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('especialidades')">
+                    <i class="fas fa-arrow-right"></i> Ver Lista
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-scalpel"></i>
+                    <h3>Especialidades Cirúrgicas</h3>
+                    <span class="tag">NT 03/2019</span>
+                </div>
+                <p>Critérios detalhados para Cirurgia Geral, Pediátrica, Plástica e Cabeça & Pescoço.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('cirurgicas')">
+                    <i class="fas fa-arrow-right"></i> Ver Detalhes
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-eye"></i>
+                    <h3>Oftalmologia</h3>
+                    <span class="tag">P0/P1/P2</span>
+                </div>
+                <p>Priorização P0/P1/P2, urgências e fluxo completo de atendimento.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('oftalmologia')">
+                    <i class="fas fa-arrow-right"></i> Consultar
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-tooth"></i>
+                    <h3>Odontologia</h3>
+                    <span class="tag">NT 32/2026</span>
+                </div>
+                <p>Consultas odontológicas especializadas via VIVVER: CEO e Reguladas.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('odontologia')">
+                    <i class="fas fa-arrow-right"></i> Ver Detalhes
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-baby"></i>
+                    <h3>Infertilidade Conjugal</h3>
+                    <span class="tag">NT 26/2025</span>
+                </div>
+                <p>Critérios de avaliação, propedêutica e encaminhamento para infertilidade.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('infertilidade')">
+                    <i class="fas fa-arrow-right"></i> Saiba Mais
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-weight-scale"></i>
+                    <h3>Endocrinologia / Obesidade</h3>
+                    <span class="tag">NT 08/2023</span>
+                </div>
+                <p>Critérios de encaminhamento por IMC, comorbidades e contraindicações.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('endocrinologia')">
+                    <i class="fas fa-arrow-right"></i> Explorar
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-virus"></i>
+                    <h3>Infectologia SAE</h3>
+                    <span class="tag">NI 01/2025</span>
+                </div>
+                <p>Primeiras consultas HIV, violência sexual, exposições e Infectologia pediátrica.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('infectologia')">
+                    <i class="fas fa-arrow-right"></i> Ver Detalhes
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-x-ray"></i>
+                    <h3>Mamografia</h3>
+                    <span class="tag">SISCAN</span>
+                </div>
+                <p>Rastreamento, alto risco, diagnóstico, agendamento no VIVVER e conduta BI-RADS.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('mamografia')">
+                    <i class="fas fa-arrow-right"></i> Consultar
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-video"></i>
+                    <h3>Teleconsultoria</h3>
+                    <span class="tag">Obrigatória</span>
+                </div>
+                <p>Especialidades com e sem obrigatoriedade, fluxo e integração com a regulação.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('teleconsultoria')">
+                    <i class="fas fa-arrow-right"></i> Entender
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-arrow-up"></i>
+                    <h3>Reclassificação</h3>
+                    <span class="tag">NT 24/2025</span>
+                </div>
+                <p>Reclassificação de prioridade para agravamento clínico no VIVVER.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('reclassificacao')">
+                    <i class="fas fa-arrow-right"></i> Ver Fluxo
+                </button>
+            </div>
+
+            <div class="card-modern">
+                <div class="card-header">
+                    <i class="fas fa-ribbon"></i>
+                    <h3>Oncologia</h3>
+                    <span class="tag">NT 02/2020</span>
+                </div>
+                <p>Fluxo de encaminhamento, documentação obrigatória e exames por especialidade.</p>
+                <button class="btn-modern btn-modern-outline" style="margin-top:10px;" onclick="navigateTo('oncologia')">
+                    <i class="fas fa-arrow-right"></i> Ver Fluxo
+                </button>
+            </div>
+        </div>
+
+        <div class="card-modern" style="background:var(--primary-light); border-left:6px solid var(--primary);">
+            <div class="card-header">
+                <i class="fas fa-info-circle" style="color:var(--primary);"></i>
+                <h3 style="font-size:0.95rem;">Informação Importante</h3>
+            </div>
+            <p style="font-size:0.85rem;">
+                Este portal apresenta informações baseadas nas Notas Técnicas oficiais da Secretaria Municipal de Saúde de Contagem.
+            </p>
+            <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:10px;">
+                <a href="https://portal.contagem.mg.gov.br/nota-tecnica" class="btn-modern" target="_blank" style="font-size:0.8rem; padding:8px 20px;">
+                    <i class="fas fa-file-alt"></i> NT's Gerais Clique aqui
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <!-- ============ FLUXOS ============ -->
+    <section id="fluxos" class="section">
+        <h2 class="section-title"><i class="fas fa-sitemap"></i> Fluxos de Regulação</h2>
+        <p class="section-subtitle">Entenda o processo completo de agendamento de consultas especializadas — NT 25/2025</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-phone-alt"></i></span>
+                1. Fluxo de Teleconsultoria
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>A partir de <strong>15 de dezembro de 2025</strong>, toda solicitação para especialidades listadas no Quadro 1 da NT 25/2025 só poderão ser inseridas no sistema VIVVER com a teleconsultoria anexada.</p>
+                <h4 style="margin:14px 0 6px; font-weight:700; color:var(--text);">Etapas do Processo:</h4>
+                <ol>
+                    <li>Médico da APS identifica possível necessidade de encaminhamento</li>
+                    <li>Abre solicitação na plataforma "Teleconsultoria Contagem"</li>
+                    <li>Preenche quadro clínico completo</li>
+                    <li>Teleconsultor responde em até <strong>72 horas</strong> com condutas</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-laptop"></i></span>
+                2. Inserção no Sistema VIVVER
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>A solicitação de consulta especializada deve ser realizada diretamente no sistema VIVVER pelos profissionais de saúde.</p>
+                <h4 style="margin:14px 0 6px; font-weight:700; color:var(--text);">Passo a Passo:</h4>
+                <ol>
+                    <li>Acessar tela "Solicitação de Procedimento de Serviço" no VIVVER</li>
+                    <li>Inserir Número de Prontuário do Paciente</li>
+                    <li>Clicar no sinal de (+) destacado em verde</li>
+                    <li>Preencher dados da solicitação</li>
+                    <li>Salvar para enviar para fila</li>
+                    <li>Anexar PDF da teleconsultoria (se obrigatório)</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-clipboard-check"></i></span>
+                3. Processo de Regulação pela CMC
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Após inserção no VIVVER, a Central de Marcação de Consultas realiza a análise e regulação da solicitação.</p>
+                <h4 style="margin:14px 0 6px; font-weight:700; color:var(--text);">Monitoramento de Pendências:</h4>
+                <ul>
+                    <li>Verificar pendências no VIVVER <strong>todos os dias</strong></li>
+                    <li>Prazo de resolução: <strong>15 dias</strong></li>
+                    <li>Após <strong>30 dias</strong> sem solução: solicitação é excluída</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-calendar-check"></i></span>
+                4. Agendamento e Comunicação
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Após regulação positiva, a CMC realiza o agendamento e envia informações à UBS.</p>
+                <h4 style="margin:14px 0 6px; font-weight:700; color:var(--text);">Processo:</h4>
+                <ol>
+                    <li>CMC agenda conforme classificação em fila de espera</li>
+                    <li>Envia relatório dos agendamentos por e-mail</li>
+                    <li>UBS acessa sistema e imprime protocolo</li>
+                    <li>UBS comunica ao usuário data, local e horário</li>
+                    <li>UBS confirma comparecimento</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-undo"></i></span>
+                5. Remarcação, Falta e Desistência
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>Remarcação:</strong> se avisar com até 72h de antecedência, vaga é reaproveitada e paciente retorna à fila</li>
+                    <li><strong>Falta sem aviso:</strong> só pode ser remarcada mediante justificativa válida (internação, convocação judicial, concurso, tratamento médico, falecimento de familiar, etc.)</li>
+                    <li><strong>Limite:</strong> apenas uma remarcação por falta, em até 30 dias após a consulta perdida</li>
+                    <li><strong>Desistência:</strong> UBS comunica à CMC, cancela no sistema e registra justificativa</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-exclamation-triangle" style="color:var(--warning);"></i></span>
+                6. Contingência (Sistema Indisponível)
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Se exigir teleconsultoria → emitir guia física e realizar teleconsultoria quando sistema voltar</li>
+                    <li>Se não exigir → emitir guia física e UBS deve depois inserir tudo no VIVVER</li>
+                    <li>Justificar no sistema: "sistema/internet indisponível"</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ESPECIALIDADES ============ -->
+    <section id="especialidades" class="section">
+        <h2 class="section-title"><i class="fas fa-list-ul"></i> Especialidades Reguladas</h2>
+        <p class="section-subtitle">NT 25/2025 — Regulação de Consultas Especializadas via Sistema VIVVER</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-check-circle" style="color:var(--success);"></i></span>
+                Reguladas — SEM Teleconsultoria Obrigatória (10)
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Não é necessário anexar relatório de teleconsultoria, mas é obrigatório inserir dados clínicos no sistema VIVVER.</p>
+                <ul>
+                    <li>Avaliação Amb Bloqueio Neuromuscular</li>
+                    <li>Cirurgia Geral</li>
+                    <li>Cirurgia Pediátrica</li>
+                    <li>Cirurgia Plástica</li>
+                    <li>Dermatologia - Hanseníase</li>
+                    <li>Oftalmologia</li>
+                    <li>Pequenas Cirurgias Urológicas</li>
+                    <li>Assistência à Saúde Trans e Travesti</li>
+                    <li>Mastologia</li>
+                    <li>Cirurgia Ambulatorial</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-clipboard-list" style="color:var(--primary);"></i></span>
+                Reguladas — COM Teleconsultoria Obrigatória (26)
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Obrigatório anexar relatório da teleconsultoria conforme NT 25/2025.</p>
+                <ul>
+                    <li>Cardiologia Adulto / Infantil</li>
+                    <li>Neurologia Adulto / Infantil</li>
+                    <li>Ortopedia</li>
+                    <li>Otorrinolaringologia</li>
+                    <li>Gastroenterologia Adulto / Infantil</li>
+                    <li>Endocrinologia Adulto / Infantil</li>
+                    <li>Pneumologia Adulto / Infantil</li>
+                    <li>Nefrologia Adulto / Infantil</li>
+                    <li>Hematologia</li>
+                    <li>Reumatologia</li>
+                    <li>Infectologia</li>
+                    <li>Angiologia</li>
+                    <li>Cirurgia Cabeça e Pescoço</li>
+                    <li>Cirurgia Torácica</li>
+                    <li>Coloproctologia</li>
+                    <li>Urologia</li>
+                    <li>Neurocirurgia</li>
+                    <li>Alergista</li>
+                    <li>Dermatologia Geral</li>
+                    <li>Geriatra</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-bolt" style="color:var(--warning);"></i></span>
+                Não Reguladas — Agendamento Direto (3)
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Agendamento direto no sistema VIVVER com disponibilidade imediata de vagas.</p>
+                <ul>
+                    <li>Mastologia</li>
+                    <li>Cirurgia Ambulatorial</li>
+                    <li>Acolhimento SAE Adulto/Infantil</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CIRURGIAS ============ -->
+    <section id="cirurgicas" class="section">
+        <h2 class="section-title"><i class="fas fa-scalpel"></i> Especialidades Cirúrgicas</h2>
+        <p class="section-subtitle">NT 03/2019 — Norma Técnica Especialidades Cirúrgicas (Revisão 07/01/2026)</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-hospital"></i></span>
+                Cirurgia Geral
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p><strong>Regulada:</strong> SIM | <strong>Código:</strong> 0301010072</p>
+                <ul>
+                    <li>Alterações do baço e gânglios linfáticos</li>
+                    <li>Hérnia de parede abdominal</li>
+                    <li>DRGE, úlceras, acalásia</li>
+                    <li>Alterações da vesícula biliar</li>
+                    <li>Nódulos hepáticos e cistos pancreáticos</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>AIH Direta:</strong> Médico da família pode emitir AIH para hernioplastias, colecistectomia, gastrostomia e troca de sonda.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-child"></i></span>
+                Cirurgia Pediátrica
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p><strong>Regulada:</strong> SIM | <strong>Idade:</strong> Menores de 12 anos</p>
+                <ul>
+                    <li>Hemangioma, restos branquiais, higroma, cisto tireoglosso</li>
+                    <li>Colelitíase, hérnia inguinal/umbilical</li>
+                    <li>Fimose, hidrocele, criptorquidia</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>AIH Direta:</strong> Pediatra pode emitir AIH para postectomia, hidrocele, orquidopexia, correção de hipospádia, colecistectomia, hernioplastias, gastrostomia.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-paint-brush"></i></span>
+                Cirurgia Plástica
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p><strong>Regulada:</strong> SIM | <strong>Idade:</strong> A partir de 12 anos</p>
+                <ul>
+                    <li>Cicatriz hipertrófica / Queloide</li>
+                    <li>Ginecomastia, hipertrofia mamária</li>
+                    <li>Nevus benignos de face, exérese de tumores de pele</li>
+                    <li>Biópsia de pele</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-head-side"></i></span>
+                Cirurgia Cabeça e Pescoço
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p><strong>Regulada:</strong> SIM</p>
+                <ul>
+                    <li>Alterações de parótida e submandibular</li>
+                    <li>Linfadenomegalias cervical</li>
+                    <li>Hiperparatireoidismo, nódulos e massas cervicais</li>
+                    <li>Tumores de glândulas salivares, laringe, cavidade oral</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-kidney"></i></span>
+                Pequenas Cirurgias Urológicas
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p><strong>Procedimento:</strong> 9900000351</p>
+                <ul>
+                    <li>Frenulectomia, frenuloplastia</li>
+                    <li>Biópsia peniana</li>
+                    <li>Condiloma masculino (exceto região perianal)</li>
+                    <li>Excisão e eletrocoagulação de lesões cutâneas</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ OFTALMOLOGIA ============ -->
+    <section id="oftalmologia" class="section">
+        <h2 class="section-title"><i class="fas fa-eye"></i> Oftalmologia</h2>
+        <p class="section-subtitle">NT 21/2024 — Regulação de Consulta Especializada em Oftalmologia</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><span class="badge-priority badge-p0">P0</span></span>
+                URGENTE — Atendimento em 24h
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Descolamento de retina, hemorragia vítrea</li>
+                    <li>Oclusão de artéria central, glaucoma agudo</li>
+                    <li>Traumatismo ocular grave, endoftalmite</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><span class="badge-priority badge-p1">P1</span></span>
+                MUITO PRIORITÁRIO — Atendimento em 7 dias
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Catarata com visão menor que 0,3</li>
+                    <li>Retinopatia diabética não proliferativa</li>
+                    <li>Glaucoma crônico, edema macular, úlcera de córnea</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><span class="badge-priority badge-p2">P2</span></span>
+                PRIORITÁRIO — Atendimento em 30 dias
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Catarata com visão entre 0,3 e 0,7</li>
+                    <li>Erro refrativo, presbiopia, pterígio, astigmatismo</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card-modern" style="border-left:6px solid var(--danger);">
+            <div class="card-header">
+                <i class="fas fa-ambulance" style="color:var(--danger);"></i>
+                <h3>Urgências Oftalmológicas</h3>
+            </div>
+            <p>Contagem não possui serviço próprio de urgência oftalmológica. Pacientes devem ser orientados a procurar:</p>
+            <ul>
+                <li>Clínica de Olhos da Santa Casa</li>
+                <li>Hospital São Geraldo</li>
+                <li>Centro Oftalmológico de Minas Gerais</li>
+                <li>Hospital Evangélico</li>
+                <li>Instituto de Olhos Ciências Médicas</li>
+            </ul>
+            <div class="info-highlight">
+                <strong>Critérios para encaminhamento imediato:</strong> perda visual súbita, trauma ocular com baixa acuidade, uveíte em atividade, úlcera de córnea, queixas agudas da superfície ocular com menos de 7 dias.
+            </div>
+        </div>
+    </section>
+
+        <!-- ============ BLOQUEIO NEUROMUSCULAR ============ -->
+    <section id="bloqueio" class="section">
+        <h2 class="section-title"><i class="fas fa-brain"></i> Bloqueio Neuromuscular</h2>
+        <p class="section-subtitle">NT 01/2023 — Referenciamento para o Ambulatório de Bloqueio Neuromuscular</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-list"></i></span>
+                CIDs Contemplados
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>G80</strong> — Paralisia cerebral</li>
+                    <li><strong>G24</strong> — Distonias</li>
+                    <li><strong>G25.3</strong> — Espasmo hemifacial</li>
+                    <li><strong>M79.1</strong> — Mialgia</li>
+                    <li><strong>G12.1</strong> — Amiotrofia espinal</li>
+                    <li><strong>R25.2</strong> — Rigidez muscular</li>
+                </ul>
+                <p style="margin-top:10px;"><strong>Escala de Ashworth Modificada:</strong> grau 1 a 3 para inclusão.</p>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-check-circle" style="color:var(--success);"></i></span>
+                Critérios de Inclusão
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Pacientes com espasticidade ou distonia focal/segmentar</li>
+                    <li>Idade mínima de 2 anos</li>
+                    <li>Ausência de contraindicações para toxina botulínica</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-times-circle" style="color:var(--danger);"></i></span>
+                Critérios de Exclusão
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Hipersensibilidade à toxina botulínica</li>
+                    <li>Doenças neuromusculares associadas</li>
+                    <li>Infecção no local de aplicação</li>
+                    <li>Gestante ou lactante</li>
+                    <li>Impossibilidade de manter acompanhamento terapêutico</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-syringe"></i></span>
+                Tratamento e Fluxo
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>O tratamento consiste na aplicação de <strong>Toxina Botulínica (TBA)</strong> por via intramuscular, com plano terapêutico individualizado, realizado por médico neurologista do município.</p>
+                <h4 style="margin:14px 0 6px;">Fluxo de Encaminhamento:</h4>
+                <ol>
+                    <li>Avaliação clínica na UBS</li>
+                    <li>Verificação dos critérios de encaminhamento</li>
+                    <li>Solicitação no VIVVER: <strong>Consulta Especializada — Procedimento 9900001085</strong></li>
+                    <li>Regulação e agendamento pela Central de Marcação</li>
+                    <li>Retorno agendado internamente pelo CAE Iria Diniz se houver indicação</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ODONTOLOGIA ============ -->
+    <section id="odontologia" class="section">
+        <h2 class="section-title"><i class="fas fa-tooth"></i> Odontologia</h2>
+        <p class="section-subtitle">NT 32/2026 — Solicitação de Consultas Odontológicas Especializadas via Sistema VIVVER</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-hospital-user"></i></span>
+                Gerenciadas pelo CEO
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Reguladas diretamente pelo Centro de Especialidades Odontológicas.</p>
+                <ul>
+                    <li>Estomatologia</li>
+                    <li>Disfunção Temporomandibular (DTM)</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>Fluxo:</strong> Dentista da UBS solicita no VIVVER → CEO avalia → agenda ou devolve com parecer.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-clipboard-check"></i></span>
+                Reguladas pela CMC
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Endodontia (anteriores, pré-molares e molares)</li>
+                    <li>Periodontia</li>
+                    <li>Prótese</li>
+                    <li>Odontopediatria</li>
+                    <li>Cirurgia Oral Menor (Traumatologia Bucomaxilofacial)</li>
+                    <li>PNE CEO</li>
+                    <li>PNE Ambulatorial</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>PNE:</strong> Pacientes com Necessidades Especiais. PNE CEO para manejo clínico difícil; PNE Ambulatorial para atendimento hospitalar com relatório médico obrigatório.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-exclamation-triangle" style="color:var(--warning);"></i></span>
+                Cancelamento, Pendências e Remarcação
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>Pendências:</strong> verificação diária, prazo de 15 dias para resposta</li>
+                    <li><strong>Cancelamento:</strong> localizar solicitação, excluir da fila e justificar</li>
+                    <li><strong>Remarcação:</strong> com 72h de antecedência ou com justificativa válida</li>
+                    <li><strong>Contingência:</strong> usar Guia de Referência em papel quando VIVVER indisponível</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ INFERTILIDADE ============ -->
+    <section id="infertilidade" class="section">
+        <h2 class="section-title"><i class="fas fa-baby"></i> Infertilidade Conjugal</h2>
+        <p class="section-subtitle">NT 26/2025 — Critérios de avaliação e encaminhamento</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-question-circle"></i></span>
+                Definição e Critérios
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Infertilidade conjugal é a ausência de gravidez em casal que mantém relações sexuais frequentes, sem uso de métodos contraceptivos, pelo período de <strong>1 ano</strong> em mulheres com até 35 anos.</p>
+                <p>A investigação pode ser iniciada antes quando houver:</p>
+                <ul>
+                    <li>Mulher com mais de 35 anos</li>
+                    <li>Ciclos menstruais irregulares</li>
+                    <li>Histórico de DIP, endometriose, cirurgias abdominais prévias</li>
+                    <li>Infertilidade masculina previamente conhecida</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-user-md"></i></span>
+                Avaliação na UBS
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <h4>Anamnese da Mulher:</h4>
+                <ul>
+                    <li>Idade, tempo de infertilidade, primária/secundária</li>
+                    <li>História menstrual, obstétrica, sexual</li>
+                    <li>Comorbidades, cirurgias, DIP</li>
+                    <li>Tabagismo, etilismo, drogas</li>
+                </ul>
+                <h4>Exame Físico:</h4>
+                <ul>
+                    <li>IMC, avaliação nutricional</li>
+                    <li>Exame pélvico: vulvovaginites, virilização, DIP</li>
+                </ul>
+                <h4>Avaliação do Parceiro:</h4>
+                <ul>
+                    <li>Desenvolvimento puberal, disfunções sexuais</li>
+                    <li>IST, caxumba, varicocele, torção testicular</li>
+                    <li>Anabolizantes, hormônios, drogas</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-flask"></i></span>
+                Propedêutica Obrigatória
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Exame ginecológico + citopatológico atualizado</li>
+                    <li>Espermograma (se alterado → Urologia)</li>
+                    <li>Ultrassonografia transvaginal</li>
+                    <li>Hormônios: FSH, LH (>35 anos), Prolactina, TSH (3º dia do ciclo)</li>
+                    <li>Sorologias: toxoplasmose, rubéola, CMV, HIV, HBsAg, Anti-HCV, HTLV, VDRL</li>
+                    <li>Histerossalpingografia se suspeita de fator tubário</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>Importante:</strong> Exames de imagem devem ser solicitados precocemente para evitar vencimento dos exames laboratoriais.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-arrow-right"></i></span>
+                Encaminhamentos
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p><strong>Ginecologia/Infertilidade:</strong> após propedêutica básica concluída, via VIVVER.</p>
+                <p><strong>Reprodução Humana (HC-UFMG):</strong></p>
+                <ul>
+                    <li>Obstrução tubária em mulheres com mais de 35 anos</li>
+                    <li>Salpingotripsia bilateral em mulheres até 37 anos</li>
+                    <li>Casais homoafetivos após propedêutica básica</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>Não elegíveis:</strong> mulheres >45 anos, >3 cesarianas, doenças de alto risco gestacional, transtornos psiquiátricos que impeçam cuidados, instabilidade conjugal.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ OBESIDADE GRAVE ============ -->
+    <section id="endocrinologia" class="section">
+        <h2 class="section-title"><i class="fas fa-weight-scale"></i> Endocrinologia / Obesidade Grave</h2>
+        <p class="section-subtitle">NT 08/2023 — Critérios de encaminhamento ao Ambulatório de Endocrinologia / Obesidade Grave</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-check-circle" style="color:var(--success);"></i></span>
+                Indicações
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>IMC ≥ 50 kg/m²</strong> — mesmo sem 2 anos de acompanhamento</li>
+                    <li><strong>IMC ≥ 40 kg/m²</strong> — com ou sem comorbidades, sem sucesso após 2 anos de tratamento</li>
+                    <li><strong>IMC ≥ 35 kg/m² com comorbidades</strong> — diabetes, HAS difícil controle, apneia do sono, doenças articulares degenerativas, sem sucesso após 2 anos</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-times-circle" style="color:var(--danger);"></i></span>
+                Contraindicações ao Tratamento Cirúrgico
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Limitação intelectual sem suporte familiar adequado</li>
+                    <li>Transtorno psiquiátrico não controlado (incluindo álcool/drogas)</li>
+                    <li>Doença cardiopulmonar grave descompensada</li>
+                    <li>Hipertensão portal com varizes esofagogástricas</li>
+                    <li>Doenças imunológicas/inflamatórias do TDS</li>
+                    <li>Síndrome de Cushing não tratada, tumores endócrinos</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>Observação:</strong> Transtornos psiquiátricos graves <em>controlados</em> não são contraindicação absoluta.
+                </div>
+            </div>
+        </div>
+
+        <div class="card-modern" style="border-left:6px solid var(--primary);">
+            <p><strong>Requisitos obrigatórios antes do encaminhamento:</strong></p>
+            <ul>
+                <li>Acompanhamento pela ESF</li>
+                <li>Acompanhamento pela EMASF (Equipe Multidisciplinar Ampliada)</li>
+                <li>Registro detalhado do tempo e evolução do acompanhamento na UBS</li>
+                <li>Cumprimento do protocolo municipal de acompanhamento do sobrepeso e obesidade</li>
+            </ul>
+        </div>
+    </section>
+
+        <!-- ============ INFECTOLOGIA ============ -->
+    <section id="infectologia" class="section">
+        <h2 class="section-title"><i class="fas fa-virus"></i> Infectologia SAE Iria Diniz</h2>
+        <p class="section-subtitle">NOTA INFORMATIVA 01/2025 — Agendamento Infectologias SAE</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-calendar-plus"></i></span>
+                Primeiras Consultas via VIVVER
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>A partir de <strong>01/12/2025</strong>, os agendamentos de primeiras consultas para os seguintes atendimentos deverão ser realizados pelo VIVVER:</p>
+                <ul>
+                    <li>HIV (adultos)</li>
+                    <li>Violência sexual (crianças)</li>
+                    <li>Exposição a Sífilis, Toxoplasmose, Rubéola, CMV, Hepatites Virais, Zika, HIV, Herpes Simples (crianças)</li>
+                    <li>Outras demandas de infectologia pediátrica</li>
+                </ul>
+                <h4 style="margin:14px 0 6px;">Dados no VIVVER:</h4>
+                <ul>
+                    <li><strong>Serviço:</strong> 1711 – ACOLH SAE ADULTO/INFANTIL</li>
+                    <li><strong>Tipo:</strong> Primeira Consulta</li>
+                    <li><strong>Procedimento:</strong> 0301010048</li>
+                    <li><strong>CBO:</strong> Assistente Social / SAE</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-file-medical"></i></span>
+                Dados Clínicos Obrigatórios
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Resultados de exames laboratoriais e/ou de imagem</li>
+                    <li>Achados clínicos relevantes</li>
+                    <li>Data da exposição ou início dos sintomas</li>
+                    <li>Informações de acompanhamento anterior</li>
+                </ul>
+                <div class="info-highlight">
+                    Essas informações são essenciais para priorização adequada e planejamento da conduta inicial.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-user-md"></i></span>
+                Demais Atendimentos de Infectologia (Adultos)
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Outras demandas de infectologia adulto seguem fluxo habitual:</p>
+                <ul>
+                    <li><strong>Tipo:</strong> Consulta médica em atenção especializada</li>
+                    <li><strong>Especialidade:</strong> Infectologia Adulto</li>
+                </ul>
+                <p style="margin-top:10px;">
+                    <strong>Contato SAE/CTA Iria Diniz:</strong><br>
+                    <i class="fas fa-phone"></i> (31) 3058-2790 (Opção 4 + 1)<br>
+                    <i class="fas fa-envelope"></i> saecontagem@yahoo.com / ctacontagem@yahoo.com.br
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ MAMOGRAFIA ============ -->
+    <section id="mamografia" class="section">
+        <h2 class="section-title"><i class="fas fa-x-ray"></i> Mamografia</h2>
+        <p class="section-subtitle">SISCAN — Rastreamento, Alto Risco e Diagnóstico</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-users"></i></span>
+                Rastreamento (40–74 anos)
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>40–49 anos:</strong> decisão compartilhada, periodicidade mínima de 2 anos</li>
+                    <li><strong>50–74 anos:</strong> rastreamento bienal</li>
+                    <li><strong>> 74 anos:</strong> individualizado (expectativa de vida, comorbidades)</li>
+                    <li>Mulheres tratadas por câncer de mama: anual de seguimento</li>
+                    <li>Homens trans e não binários com tecido mamário: mesmas recomendações</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-exclamation-triangle" style="color:var(--warning);"></i></span>
+                Alto Risco e Diagnóstico
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p><strong>Alto Risco:</strong> a partir de 35 anos com histórico familiar de câncer de mama/ovário em parentes de 1º grau ou histórico pessoal de câncer de ovário.</p>
+                <p><strong>Diagnóstica:</strong> sinais ou sintomas suspeitos independente da idade:</p>
+                <ul>
+                    <li>Nódulo endurecido/fixo, descarga papilar sanguinolenta</li>
+                    <li>Pele em "casca de laranja", retração cutânea, linfonodos axilares suspeitos</li>
+                    <li>Aumento progressivo da mama com edema, retração do mamilo</li>
+                    <li>Tumoração palpável em homens (sempre diagnóstica)</li>
+                    <li>Mastite sem melhora após antibiótico</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-clipboard"></i></span>
+                Profissionais Autorizados e Agendamento
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>Médicos e enfermeiros:</strong> rastreamento e alto risco</li>
+                    <li><strong>Exclusivamente médicos:</strong> mamografia diagnóstica</li>
+                </ul>
+                <h4 style="margin:14px 0 6px;">Agendamento no VIVVER (2026):</h4>
+                <ol>
+                    <li>Inserir solicitação, selecionar tipo</li>
+                    <li>Salvar → sistema abre agenda disponível</li>
+                    <li>Confirmar, imprimir protocolo</li>
+                    <li>Anexar protocolo à requisição do SISCAN</li>
+                </ol>
+                <div class="info-highlight">
+                    <strong>Prestadores:</strong> CAE Iria Diniz (todas) | Ônibus Rosa (apenas rastreamento 40–74 anos)
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-chart-pie"></i></span>
+                Conduta por BI-RADS
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>BI-RADS 1 e 2:</strong> acompanhamento habitual na UBS</li>
+                    <li><strong>BI-RADS 0:</strong> encaminhar para Mastologia</li>
+                    <li><strong>BI-RADS 3:</strong> encaminhar para Mastologia para avaliação</li>
+                    <li><strong>BI-RADS 4 e 5:</strong> encaminhar para Oncologia</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TELECONSULTORIA ============ -->
+    <section id="teleconsultoria" class="section">
+        <h2 class="section-title"><i class="fas fa-video"></i> Teleconsultoria</h2>
+        <p class="section-subtitle">Especialidades com e sem obrigatoriedade — NT 25/2025</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-check-circle" style="color:var(--success);"></i></span>
+                O que é Teleconsultoria?
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Consulta entre profissionais de saúde por plataforma digital, onde um teleconsultor (especialista) responde dúvidas clínicas e auxilia na condução do caso.</p>
+                <p><strong>Não substitui</strong> a consulta especializada, mas auxilia na decisão clínica e qualificação do encaminhamento.</p>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-clipboard-list"></i></span>
+                Especialidades com Obrigatoriedade
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Obrigatória antes de solicitar consulta via VIVVER para:</p>
+                <ul>
+                    <li>Cardiologia, Cirurgia Bariátrica, Cirurgia Vascular</li>
+                    <li>Endocrinologia, Gastroenterologia, Geriatria</li>
+                    <li>Hematologia, Infectologia, Nefrologia, Neurologia</li>
+                    <li>Neurocirurgia, Ortopedia, Otorrinolaringologia</li>
+                    <li>Pneumologia, Reumatologia, Urologia, Dermatologia</li>
+                </ul>
+                <div class="info-highlight">
+                    Após a resposta, o relatório deve ser anexado à solicitação no VIVVER.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-bolt" style="color:var(--warning);"></i></span>
+                Especialidades Dispensadas
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li>Oftalmologia, Mastologia, Cirurgia Geral, Cirurgia Plástica</li>
+                    <li>Assistência à Saúde da Pessoa Trans</li>
+                    <li>Dermatologia – Hanseníase, Procedimentos Hematológicos</li>
+                    <li>Avaliação para Bloqueio Neuromuscular</li>
+                    <li>Cirurgia Ambulatorial, Acolhimento SAE</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-sync"></i></span>
+                Fluxo e Benefícios
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ol>
+                    <li>Profissional da APS avalia paciente</li>
+                    <li>Registra Teleconsultoria na plataforma</li>
+                    <li>Teleconsultor responde em até <strong>72h</strong></li>
+                    <li>Profissional analisa orientação</li>
+                    <li>Pode: resolver na APS, solicitar exames, ajustar tratamento ou encaminhar</li>
+                </ol>
+                <p><strong>Benefícios:</strong> amplia resolutividade, reduz encaminhamentos inadequados, melhora qualidade, diminui tempo de espera.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ RECLASSIFICAÇÃO ============ -->
+    <section id="reclassificacao" class="section">
+        <h2 class="section-title"><i class="fas fa-arrow-up"></i> Reclassificação de Prioridade</h2>
+        <p class="section-subtitle">NT 24/2025 — Reclassificação de prioridade no Sistema VIVVER</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-question-circle"></i></span>
+                Quando Solicitar
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Somente quando houver <strong>agravamento do estado de saúde</strong> que justifique atendimento mais rápido.</p>
+                <ul>
+                    <li>Primeira consulta especializada</li>
+                    <li>Consulta de retorno</li>
+                    <li>Exames, procedimentos, cirurgias eletivas</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>Não deve ser utilizada</strong> apenas para antecipar consultas sem justificativa clínica.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-user-check"></i></span>
+                Quem Avalia
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ul>
+                    <li><strong>Primeira consulta, exames, procedimentos, cirurgias:</strong> Médico regulador</li>
+                    <li><strong>Retorno:</strong> Gestor da clínica</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-laptop"></i></span>
+                Como Registrar no VIVVER
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <ol>
+                    <li>Localizar solicitação (protocolo, prontuário ou nome)</li>
+                    <li>Acessar tela <strong>Classificação da Fila de Espera por Procedimento</strong></li>
+                    <li>Clicar em <strong>Alterar Prioridade</strong></li>
+                    <li>Selecionar <strong>RECLASSIFICAÇÃO DE PRIORIDADE</strong></li>
+                    <li>Motivo: <strong>REGULAÇÃO</strong></li>
+                    <li>Registrar atualização clínica no campo <strong>Observação</strong></li>
+                </ol>
+                <div class="info-highlight">
+                    Após clicar em OK, o texto não poderá mais ser editado. Novas informações exigem nova alteração.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-file-signature"></i></span>
+                Relatórios de Fora da Rede SUS
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Quando relatório vier de outro serviço SUS (ex: hospital de BH):</p>
+                <ul>
+                    <li>UBS protocola o documento</li>
+                    <li>Encaminha por malote ao setor correspondente da CMC</li>
+                    <li>CMC digitaliza, anexa à solicitação no VIVVER e encaminha ao regulador</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ ONCOLOGIA ============ -->
+    <section id="oncologia" class="section">
+        <h2 class="section-title"><i class="fas fa-ribbon"></i> Oncologia</h2>
+        <p class="section-subtitle">NT 02/2020 — Norma Técnica Oncologia — Fluxo de encaminhamento e documentação</p>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-file-import"></i></span>
+                1. Fluxo de Encaminhamento
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>O encaminhamento pode ser originado na rede pública ou na rede privada.</p>
+                <p>Independentemente da origem, o paciente (ou responsável) deve:</p>
+                <ul>
+                    <li>Protocolar toda a documentação no <strong>CEAPS</strong></li>
+                    <li>Apresentar toda a documentação exigida para abertura do processo</li>
+                </ul>
+                <p>A solicitação deve ser emitida por médico (ou dentista, quando se tratar de casos da sua área de atuação), contendo:</p>
+                <ul>
+                    <li>Especialidade oncológica solicitada</li>
+                    <li>Identificação do profissional</li>
+                    <li>Assinatura e carimbo legível</li>
+                </ul>
+                <div class="info-highlight">
+                    <strong>Endereço CEAPS:</strong> Av. João César de Oliveira, 2415 – B. Eldorado<br>
+                    <strong>WhatsApp:</strong> (31) 992570767
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-id-card"></i></span>
+                2. Dados Obrigatórios do Paciente
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>O encaminhamento deve conter obrigatoriamente:</p>
+                <ul>
+                    <li>Cartão Nacional de Saúde (CNS) atualizado</li>
+                    <li>Nome completo</li>
+                    <li>Nome da mãe</li>
+                    <li>Sexo</li>
+                    <li>Data de nascimento</li>
+                    <li>Endereço completo</li>
+                    <li>Telefones atualizados para contato</li>
+                    <li>Carimbo da Unidade de Saúde de referência</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-file-alt"></i></span>
+                3. Documentação Obrigatória
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>No momento do protocolo devem ser apresentados:</p>
+                <ul>
+                    <li>Encaminhamento médico original</li>
+                    <li>Cópia da identidade</li>
+                    <li>Cópia do CPF</li>
+                    <li>Comprovante de endereço atualizado</li>
+                    <li>Cópia do Cartão SUS</li>
+                    <li>Cópia dos exames que comprovem o diagnóstico ou alta suspeita</li>
+                    <li>Cópia da biópsia e/ou exames de imagem, conforme a especialidade</li>
+                    <li>Sumário de alta, quando houver</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-clipboard-list"></i></span>
+                4. Requisitos Mínimos do Encaminhamento
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>Todo encaminhamento deve conter informações clínicas suficientes para permitir a regulação adequada:</p>
+                <ul>
+                    <li>História clínica</li>
+                    <li>Descrição da lesão</li>
+                    <li>Impressão diagnóstica</li>
+                    <li>Exames realizados</li>
+                    <li>Resultado da biópsia, quando indicada</li>
+                    <li>Tipo histológico</li>
+                    <li>Sítio primário da lesão</li>
+                    <li>Data da biópsia</li>
+                    <li>Tratamentos já realizados</li>
+                    <li>Local e data desses tratamentos</li>
+                    <li>Compatibilidade entre a especialidade solicitada e o sítio primário da doença</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-exclamation-triangle" style="color:var(--danger);"></i></span>
+                5. Casos que NÃO seguem este fluxo
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <p>A Comissão Municipal de Oncologia de Belo Horizonte agenda apenas consultas eletivas para pacientes com condições de avaliação ambulatorial.</p>
+                <p><strong>Não são regulados por este fluxo:</strong></p>
+                <ul>
+                    <li>Pacientes internados</li>
+                    <li>Casos de urgência</li>
+                    <li>Pacientes que necessitam de internação imediata</li>
+                </ul>
+                <div class="info-highlight">
+                    Esses casos possuem fluxo específico de atendimento hospitalar.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-modern">
+            <button class="accordion-header" onclick="toggleAccordion(this)">
+                <span class="icon-left"><i class="fas fa-microscope"></i></span>
+                6. Documentação Específica por Especialidade
+                <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <div class="accordion-content">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;">
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Braquiterapia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia</li>
+                            <li>Descrição da lesão</li>
+                            <li>Sumário de alta pós-cirúrgico</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Cirurgia Cabeça e Pescoço</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li><strong>Tireoide:</strong> biópsia obrigatória</li>
+                            <li><strong>Laringe:</strong> biópsia e/ou imagem</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Cirurgia Geral</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li><strong>Estômago/Esôfago:</strong> EDA + biópsia</li>
+                            <li><strong>Fígado/Vias/Pâncreas:</strong> imagem</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Cirurgia Pediátrica</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia e/ou exames laboratoriais e de imagem</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Cirurgia Plástica</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia</li>
+                            <li>Descrição da lesão</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Cirurgia Torácica</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia e/ou imagem</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Dermatologia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia</li>
+                            <li>Descrição da lesão</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Ginecologia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li><strong>Colo/Endométrio:</strong> biópsia</li>
+                            <li><strong>Ovários/Pélvica:</strong> imagem</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Hematologia (Adulto/Pediátrica)</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia e/ou exames laboratoriais e de imagem</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Mastologia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia <strong>ou</strong></li>
+                            <li>Mamografia BI-RADS 4 ou 5 (até 5 meses)</li>
+                            <li>USG mama apenas BI-RADS 5 (até 5 meses)</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Oftalmologia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia</li>
+                            <li>Descrição da lesão</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Proctologia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Laudo da colonoscopia</li>
+                            <li>Biópsia obrigatória</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Radioterapia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Biópsia e/ou imagem</li>
+                            <li><em>Exceção: queloide não exige biópsia</em></li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px;">
+                        <strong>Radioiodoterapia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li>Laudo da biópsia</li>
+                            <li>Exame hormonal</li>
+                            <li>Sumário de alta</li>
+                        </ul>
+                    </div>
+                    <div style="background:var(--primary-light); padding:10px 12px; border-radius:8px; grid-column:1/-1;">
+                        <strong>Urologia</strong>
+                        <ul style="margin:4px 0 0 14px; font-size:0.8rem;">
+                            <li><strong>Próstata:</strong> laudo da biópsia + PSA (se disponível)</li>
+                            <li><strong>Rins e Bexiga:</strong> exame de imagem</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-modern" style="border-left:6px solid var(--primary); margin-top:10px;">
+            <div class="card-header">
+                <i class="fas fa-flag-checkered" style="color:var(--primary);"></i>
+                <h3>Responsabilidades da Unidade de Saúde</h3>
+            </div>
+            <ul>
+                <li>Emitir o encaminhamento corretamente</li>
+                <li>Conferir se toda a documentação obrigatória está presente</li>
+                <li>Garantir que o Cartão SUS esteja atualizado</li>
+                <li>Orientar o paciente sobre a necessidade de protocolar a documentação no CEAPS</li>
+                <li>Anexar todos os exames pertinentes conforme a especialidade solicitada</li>
+            </ul>
+            <div class="info-highlight">
+                <strong>Importante:</strong> Encaminhamentos incompletos podem atrasar ou impedir o agendamento da consulta oncológica.
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ LINKS ÚTEIS ============ -->
+    <section id="linksuteis" class="section">
+        <h2 class="section-title"><i class="fas fa-link"></i> Links Úteis</h2>
+        <p class="section-subtitle">Acesse rapidamente os principais sistemas e portais utilizados no dia a dia da regulação e atenção à saúde.</p>
+
+        <div class="card-modern">
+            <div class="card-header">
+                <i class="fas fa-globe"></i>
+                <h3>Portais e Sistemas</h3>
+            </div>
+            <div class="links-grid">
+                <a href="https://www.contagem-mg.vivver.com/desktop" class="link-button" target="_blank">
+                    <i class="fas fa-desktop"></i>
+                    <span>Sistema Vivver</span>
+                </a>
+                <a href="https://portal.contagem.mg.gov.br/" class="link-button" target="_blank">
+                    <i class="fas fa-building"></i>
+                    <span>Prefeitura de Contagem</span>
+                </a>
+                <a href="https://portal.contagem.mg.gov.br/secretaria-de-saude" class="link-button" target="_blank">
+                    <i class="fas fa-hospital"></i>
+                    <span>Portal da Secretaria de Saúde Contagem</span>
+                </a>
+                <a href="https://portal.contagem.mg.gov.br/portal/paginas-dinamicas-categoria/15/" class="link-button" target="_blank">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Portal do Servidor</span>
+                </a>
+                <a href="https://geoprocessamento.contagem.mg.gov.br/portal/apps/sites/#/geocontagem" class="link-button" target="_blank">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Aplicativos / Contagem</span>
+                </a>
+                <a href="https://geoprocessamento.contagem.mg.gov.br/portal/apps/experiencebuilder/experience/?id=1cc51ed1bb7546e092ecad2935cc425d" class="link-button" target="_blank">
+                    <i class="fas fa-pills"></i>
+                    <span>Aqui tem / Remédio</span>
+                </a>
+                <a href="https://portal.contagem.mg.gov.br/atencao-primaria" class="link-button" target="_blank">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Endereço das Unidades</span>
+                </a>
+                <a href="https://geoprocessamento.contagem.mg.gov.br/portal/apps/webappviewer/index.html?id=a29dd6c9d5944c51998c3ffa1efe0c70" class="link-button" target="_blank">
+                    <
+                <a href="https://geoprocessamento.contagem.mg.gov.br/portal/apps/webappviewer/index.html?id=a29dd6c9d5944c51998c3ffa1efe0c70" class="link-button" target="_blank">
+                    <i class="fas fa-map-pin"></i>
+                    <span>Equipamentos da Saúde de Contagem</span>
+                </a>
+                <a href="https://cadastro.saude.gov.br/segcartao/?contextType=external&username=string&contextValue=%2Foam&password=sercure_string&challenge_url=https%3A%2F%2Fcadastro.saude.gov.br%2Fsegcartao&request_id=-8519814493389994660&authn_try_count=0&locale=es_ES&resource_url" class="link-button" target="_blank">
+                    <i class="fas fa-id-card"></i>
+                    <span>CadWeb</span>
+                </a>
+                <a href="https://cnesadm.datasus.gov.br/cnesadm/publico/usuarios/cadastro" class="link-button" target="_blank">
+                    <i class="fas fa-search"></i>
+                    <span>Pesquisa do CNS</span>
+                </a>
+                <a href="https://app.powerbi.com/view?r=eyJrIjoiYTRiZDcyZWYtMzAwNS00NmYyLTk3N2EtYWEwYTk2NTFhMmY1IiwidCI6ImFlODYzMzdlLTU3NWUtNDMzMC05NDc2LTkzZGU2ODJiMDAyMCJ9" class="link-button" target="_blank">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Pesquisa por endereço</span>
+                </a>
+                <a href="https://egestoraps.saude.gov.br/" class="link-button" target="_blank">
+                    <i class="fas fa-laptop"></i>
+                    <span>E Gestor</span>
+                </a>
+                <a href="https://cnes.datasus.gov.br/pages/estabelecimentos/consulta.jsp" class="link-button" target="_blank">
+                    <i class="fas fa-database"></i>
+                    <span>CNES</span>
+                </a>
+                <a href="http://sigtap.datasus.gov.br/tabela-unificada/app/sec/inicio.jsp" class="link-button" target="_blank">
+                    <i class="fas fa-table"></i>
+                    <span>Tabela Sigtap</span>
+                </a>
+                <a href="https://siscan.saude.gov.br/login.jsf" class="link-button" target="_blank">
+                    <i class="fas fa-ribbon"></i>
+                    <span>Siscan</span>
+                </a>
+                <a href="https://notifica.saude.gov.br/login" class="link-button" target="_blank">
+                    <i class="fas fa-bell"></i>
+                    <span>Esus Notifica</span>
+                </a>
+                <a href="https://crmmg.org.br/" class="link-button" target="_blank">
+                    <i class="fas fa-user-md"></i>
+                    <span>CRM</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer-modern">
+    <div class="container">
+        <p>
+            <strong>Diretoria de Regulação do Acesso</strong> •
+            <strong>Central de Marcação de Consultas</strong> •
+            <span style="opacity:0.4;">© 2026 — Todos os direitos reservados</span>
+        </p>
+    </div>
+</footer>
+
+<!-- ===== SCROLL TO TOP ===== -->
+<button class="scroll-top" id="scrollTop" aria-label="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('loaded');
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sectionIds = [
+        'inicio', 'fluxos', 'especialidades', 'cirurgicas', 'oftalmologia',
+        'bloqueio', 'odontologia', 'infertilidade', 'endocrinologia',
+        'infectologia', 'mamografia', 'teleconsultoria', 'reclassificacao',
+        'oncologia', 'linksuteis'
+    ];
+
+    const sections = {};
+    sectionIds.forEach(id => {
+        sections[id] = document.getElementById(id);
+    });
+
+    function navigateTo(sectionId) {
+        Object.values(sections).forEach(s => {
+            if (s) s.classList.remove('active');
+        });
+        if (sections[sectionId]) {
+            sections[sectionId].classList.add('active');
+        }
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.section === sectionId) {
+                link.classList.add('active');
+            }
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const sectionId = this.dataset.section;
+            if (sectionId) navigateTo(sectionId);
+        });
+    });
+
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.accordion-icon');
+        if (content) {
+            content.classList.toggle('active');
+            if (icon) icon.classList.toggle('active');
+        }
+    }
+
+    const scrollBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            scrollBtn.classList.add('visible');
+        } else {
+            scrollBtn.classList.remove('visible');
+        }
+    });
+    scrollBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    (function() {
+        const panel = document.getElementById('floatingPanel');
+        const toggle = document.getElementById('panelToggle');
+        const arrow = toggle.querySelector('.tab-arrow');
+        let isOpen = false;
+
+        toggle.addEventListener('click', function() {
+            isOpen = !isOpen;
+            if (isOpen) {
+                panel.classList.add('open');
+                arrow.classList.remove('fa-chevron-right');
+                arrow.classList.add('fa-chevron-left');
+            } else {
+                panel.classList.remove('open');
+                arrow.classList.remove('fa-chevron-left');
+                arrow.classList.add('fa-chevron-right');
+            }
+        });
+    })();
+
+    (function() {
+        const input = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearInlineButton');
+        const allSections = Array.from(document.querySelectorAll('.section'));
+        const blocks = Array.from(document.querySelectorAll('.accordion-content, .card-modern, .links-grid'));
+
+        function escapeRegExp(str) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function removeMarks(root) {
+            root.querySelectorAll('mark').forEach(m => {
+                m.replaceWith(document.createTextNode(m.textContent));
+            });
+        }
+
+        function highlightInBlock(block, term) {
+            removeMarks(block);
+            const regex = new RegExp(escapeRegExp(term), 'gi');
+            const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
+                acceptNode(node) {
+                    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    const tag = node.parentNode?.nodeName.toLowerCase();
+                    if (tag === 'script' || tag === 'style') return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            });
+            const textNodes = [];
+            while (walker.nextNode()) textNodes.push(walker.currentNode);
+            textNodes.forEach(node => {
+                const value = node.nodeValue;
+                if (!regex.test(value)) return;
+                const frag = document.createDocumentFragment();
+                let lastIndex = 0;
+                regex.lastIndex = 0;
+                let match;
+                while ((match = regex.exec(value)) !== null) {
+                    frag.appendChild(document.createTextNode(value.slice(lastIndex, match.index)));
+                    const mark = document.createElement('mark');
+                    mark.textContent = match[0];
+                    frag.appendChild(mark);
+                    lastIndex = match.index + match[0].length;
+                }
+                frag.appendChild(document.createTextNode(value.slice(lastIndex)));
+                node.parentNode.replaceChild(frag, node);
+            });
+        }
+
+        function applySearch() {
+            const term = input.value.trim();
+            const hasText = term.length > 0;
+            clearBtn.style.display = hasText ? 'flex' : 'none';
+
+            allSections.forEach(s => s.classList.remove('search-hidden'));
+            blocks.forEach(b => b.classList.remove('search-hidden', 'search-match'));
+
+            if (!hasText) {
+                blocks.forEach(b => removeMarks(b));
+                return;
+            }
+
+            const termLower = term.toLowerCase();
+            let firstVisible = null;
+
+            blocks.forEach(block => {
+                const match = block.textContent.toLowerCase().includes(termLower);
+                if (!match) {
+                    block.classList.add('search-hidden');
+                    removeMarks(block);
+                } else {
+                    block.classList.add('search-match');
+                    highlightInBlock(block, term);
+                    if (!firstVisible) firstVisible = block;
+                }
+            });
+
+            allSections.forEach(section => {
+                if (!section.querySelector('.accordion-content:not(.search-hidden), .card-modern:not(.search-hidden), .links-grid:not(.search-hidden)')) {
+                    section.classList.add('search-hidden');
+                }
+            });
+
+            if (firstVisible) {
+                firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        input.addEventListener('input', applySearch);
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            input.focus();
+            applySearch();
+        });
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                input.value = '';
+                applySearch();
+            }
+        });
+    })();
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('.accordion-content.active').forEach(el => {
+                el.classList.remove('active');
+                const icon = el.previousElementSibling?.querySelector('.accordion-icon');
+                if (icon) icon.classList.remove('active');
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
+                        
+    
+    
