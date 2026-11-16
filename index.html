@@ -9,7 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --primary: #0A58CA;
@@ -33,7 +37,9 @@
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -45,12 +51,24 @@
             transition: opacity 0.3s ease;
         }
 
-        body.loaded { opacity: 1; }
+        body.loaded {
+            opacity: 1;
+        }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 8px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
 
         /* ===== MENU LATERAL FLUTUANTE (ESQUERDA — NOTAS TÉCNICAS) ===== */
         .floating-panel {
@@ -66,7 +84,9 @@
             filter: drop-shadow(0 8px 32px rgba(0,0,0,0.15));
         }
 
-        .floating-panel.open { transform: translateY(-50%) translateX(0); }
+        .floating-panel.open {
+            transform: translateY(-50%) translateX(0);
+        }
 
         .panel-content {
             background: var(--white);
@@ -80,9 +100,17 @@
             overflow-y: auto;
         }
 
-        .panel-content::-webkit-scrollbar { width: 4px; }
-        .panel-content::-webkit-scrollbar-track { background: var(--primary-light); border-radius: 4px; }
-        .panel-content::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .panel-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        .panel-content::-webkit-scrollbar-track {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+        .panel-content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
 
         .panel-header {
             display: flex;
@@ -93,7 +121,10 @@
             margin-bottom: 6px;
         }
 
-        .panel-header i { color: var(--primary); font-size: 1.2rem; }
+        .panel-header i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
 
         .panel-header span {
             font-size: 0.8rem;
@@ -103,7 +134,11 @@
             text-transform: uppercase;
         }
 
-        .panel-links { display: flex; flex-direction: column; gap: 6px; }
+        .panel-links {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
         .panel-link-btn {
             display: flex;
@@ -155,11 +190,18 @@
             flex-shrink: 0;
         }
 
-        .panel-tab:hover { background: var(--primary-dark); }
+        .panel-tab:hover {
+            background: var(--primary-dark);
+        }
 
-        .panel-tab .tab-arrow { font-size: 0.8rem; transition: transform 0.4s ease; }
+        .panel-tab .tab-arrow {
+            font-size: 0.8rem;
+            transition: transform 0.4s ease;
+        }
 
-        .floating-panel.open .panel-tab .tab-arrow { transform: rotate(180deg); }
+        .floating-panel.open .panel-tab .tab-arrow {
+            transform: rotate(180deg);
+        }
 
         .panel-tab .tab-label {
             writing-mode: vertical-rl;
@@ -186,27 +228,33 @@
             filter: drop-shadow(0 8px 32px rgba(0,0,0,0.15));
         }
 
-        .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
+        .floating-panel-right.open {
+            transform: translateY(-50%) translateX(0);
+        }
 
-        .floating-panel-right .panel-content { border-radius: 16px 0 0 16px; }
+        .floating-panel-right .panel-content {
+            border-radius: 16px 0 0 16px;
+        }
 
-        .floating-panel-right .panel-link-btn:hover { transform: translateX(-4px); }
+        .floating-panel-right .panel-link-btn:hover {
+            transform: translateX(-4px);
+        }
 
         .floating-panel-right .panel-tab {
             border-radius: 12px 0 0 12px;
             background: var(--primary);
         }
 
-        .floating-panel-right .panel-tab:hover { background: var(--primary-dark); }
+        .floating-panel-right .panel-tab:hover {
+            background: var(--primary-dark);
+        }
 
-        .floating-panel-right .panel-tab .tab-arrow { transform: rotate(180deg); }
-
-        .floating-panel-right.open .panel-tab .tab-arrow { transform: rotate(0deg); }
-
-        .floating-panel-right .panel-tab .tab-label {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
+        .floating-panel-right .panel-tab .tab-arrow {
             transform: rotate(180deg);
+        }
+
+        .floating-panel-right.open .panel-tab .tab-arrow {
+            transform: rotate(0deg);
         }
 
         /* ===== HEADER ===== */
@@ -242,7 +290,11 @@
             gap: 20px;
         }
 
-        .header-brand { display: flex; align-items: center; gap: 16px; }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
 
         .header-brand .logo-icon {
             width: 54px;
@@ -289,7 +341,10 @@
             line-height: 1.6;
         }
 
-        .header-info strong { color: #fff; font-weight: 600; }
+        .header-info strong {
+            color: #fff;
+            font-weight: 600;
+        }
 
         .header-info .badge-header {
             display: inline-block;
@@ -337,7 +392,9 @@
             scrollbar-width: none;
         }
 
-        .nav-modern .container::-webkit-scrollbar { display: none; }
+        .nav-modern .container::-webkit-scrollbar {
+            display: none;
+        }
 
         .nav-modern .nav-scroll {
             display: flex;
@@ -380,8 +437,13 @@
             transition: width 0.3s ease;
         }
 
-        .nav-modern .nav-link:hover::after { width: 60%; }
-        .nav-modern .nav-link.active::after { width: 60%; }
+        .nav-modern .nav-link:hover::after {
+            width: 60%;
+        }
+
+        .nav-modern .nav-link.active::after {
+            width: 60%;
+        }
 
         .nav-modern .nav-link i {
             font-size: 0.8rem;
@@ -395,7 +457,10 @@
             border-color: var(--primary-soft);
         }
 
-        .nav-modern .nav-link:hover i { color: var(--primary); opacity: 0.8; }
+        .nav-modern .nav-link:hover i {
+            color: var(--primary);
+            opacity: 0.8;
+        }
 
         .nav-modern .nav-link.active {
             background: var(--primary-darker);
@@ -404,7 +469,10 @@
             box-shadow: 0 4px 12px rgba(10,26,58,0.25);
         }
 
-        .nav-modern .nav-link.active i { opacity: 1; color: #fff; }
+        .nav-modern .nav-link.active i {
+            opacity: 1;
+            color: #fff;
+        }
 
         /* ===== SEARCH ===== */
         .search-section {
@@ -463,8 +531,13 @@
             transition: background 0.2s ease;
         }
 
-        .clear-inline:hover { background: rgba(0,0,0,0.05); }
-        .clear-inline.visible { display: flex; }
+        .clear-inline:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .clear-inline.visible {
+            display: flex;
+        }
 
         /* ===== MAIN ===== */
         .main-content {
@@ -473,8 +546,14 @@
             padding: 8px 24px 50px;
         }
 
-        .section { display: none; animation: fadeIn 0.4s ease; }
-        .section.active { display: block; }
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -492,7 +571,10 @@
             gap: 12px;
         }
 
-        .section-title i { color: var(--primary); font-size: 1.5rem; }
+        .section-title i {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
 
         .section-subtitle {
             color: var(--text-light);
@@ -532,7 +614,9 @@
             transition: opacity 0.3s ease;
         }
 
-        .card-modern:hover::before { opacity: 1; }
+        .card-modern:hover::before {
+            opacity: 1;
+        }
 
         .card-modern::after {
             content: '';
@@ -547,7 +631,9 @@
             opacity: 0;
         }
 
-        .card-modern:hover::after { opacity: 1; }
+        .card-modern:hover::after {
+            opacity: 1;
+        }
 
         .card-modern .card-header {
             display: flex;
@@ -603,8 +689,13 @@
             z-index: 1;
         }
 
-        .card-modern li { margin-bottom: 3px; }
-        .card-modern li strong { color: var(--text); }
+        .card-modern li {
+            margin-bottom: 3px;
+        }
+
+        .card-modern li strong {
+            color: var(--text);
+        }
 
         .card-modern .info-highlight {
             background: var(--primary-light);
@@ -618,7 +709,9 @@
             z-index: 1;
         }
 
-        .card-modern .info-highlight strong { color: var(--primary-dark); }
+        .card-modern .info-highlight strong {
+            color: var(--primary-dark);
+        }
 
         /* ===== GRID ===== */
         .grid-modern {
@@ -628,7 +721,9 @@
             margin: 20px 0;
         }
 
-        .grid-modern .card-modern { margin-bottom: 0; }
+        .grid-modern .card-modern {
+            margin-bottom: 0;
+        }
 
         /* ===== ACCORDION ===== */
         .accordion-modern {
@@ -664,7 +759,9 @@
             gap: 12px;
         }
 
-        .accordion-modern .accordion-header:hover { background: var(--primary-light); }
+        .accordion-modern .accordion-header:hover {
+            background: var(--primary-light);
+        }
 
         .accordion-modern .accordion-header .icon-left {
             color: var(--primary);
@@ -680,7 +777,9 @@
             flex-shrink: 0;
         }
 
-        .accordion-modern .accordion-header .accordion-icon.active { transform: rotate(180deg); }
+        .accordion-modern .accordion-header .accordion-icon.active {
+            transform: rotate(180deg);
+        }
 
         .accordion-modern .accordion-content {
             display: none;
@@ -702,7 +801,9 @@
             font-size: 0.9rem;
         }
 
-        .accordion-modern .accordion-content li { margin-bottom: 3px; }
+        .accordion-modern .accordion-content li {
+            margin-bottom: 3px;
+        }
 
         .accordion-modern .accordion-content .badge-priority {
             display: inline-block;
@@ -750,7 +851,10 @@
             box-shadow: none;
         }
 
-        .btn-modern-outline:hover { background: var(--primary); color: #fff; }
+        .btn-modern-outline:hover {
+            background: var(--primary);
+            color: #fff;
+        }
 
         /* ===== LINKS GRID ===== */
         .links-grid {
@@ -791,7 +895,9 @@
             text-align: center;
         }
 
-        .link-button span { line-height: 1.3; }
+        .link-button span {
+            line-height: 1.3;
+        }
 
         .highlight-button {
             background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
@@ -808,7 +914,9 @@
             gap: 10px;
         }
 
-        .links-section-title i { color: var(--primary); }
+        .links-section-title i {
+            color: var(--primary);
+        }
 
         /* ===== FOOTER ===== */
         .footer-modern {
@@ -819,9 +927,18 @@
             border-top: 1px solid rgba(255,255,255,0.04);
         }
 
-        .footer-modern .container { max-width: 92%; margin: 0 auto; }
-        .footer-modern p { font-size: 0.8rem; }
-        .footer-modern strong { color: #fff; }
+        .footer-modern .container {
+            max-width: 92%;
+            margin: 0 auto;
+        }
+
+        .footer-modern p {
+            font-size: 0.8rem;
+        }
+
+        .footer-modern strong {
+            color: #fff;
+        }
 
         /* ===== SCROLL ===== */
         .scroll-top {
@@ -846,11 +963,20 @@
             font-size: 1rem;
         }
 
-        .scroll-top.visible { opacity: 1; visibility: visible; }
-        .scroll-top:hover { transform: scale(1.08); background: var(--primary-dark); }
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: scale(1.08);
+            background: var(--primary-dark);
+        }
 
         /* ===== SEARCH HIDDEN ===== */
-        .search-hidden { display: none !important; }
+        .search-hidden {
+            display: none !important;
+        }
         .search-match mark {
             background: #fde68a;
             padding: 1px 3px;
@@ -878,7 +1004,10 @@
                 padding: 14px 0 10px;
             }
 
-            .header-info { text-align: left; width: 100%; }
+            .header-info {
+                text-align: left;
+                width: 100%;
+            }
 
             .header-brand .logo-icon {
                 width: 38px;
@@ -887,54 +1016,151 @@
                 border-radius: 10px;
             }
 
-            .header-brand h1 { font-size: 1rem; }
-            .header-quote { font-size: 0.7rem; padding: 6px 0; }
-            .nav-modern .container { padding: 4px 0; }
-            .nav-modern .nav-link { padding: 6px 10px; font-size: 0.65rem; }
-            .nav-modern .nav-link i { font-size: 0.65rem; }
-            .section-title { font-size: 1.2rem; }
-            .section-subtitle { font-size: 0.85rem; }
-            .card-modern { padding: 14px 16px; }
-            .card-modern .card-header h3 { font-size: 0.9rem; }
-            .grid-modern { grid-template-columns: 1fr; }
-            .accordion-modern .accordion-header { padding: 10px 14px; font-size: 0.8rem; }
-            .links-grid { grid-template-columns: 1fr 1fr; }
-            .btn-modern { padding: 8px 18px; font-size: 0.75rem; }
+            .header-brand h1 {
+                font-size: 1rem;
+            }
+
+            .header-quote {
+                font-size: 0.7rem;
+                padding: 6px 0;
+            }
+
+            .nav-modern .container {
+                padding: 4px 0;
+            }
+
+            .nav-modern .nav-link {
+                padding: 6px 10px;
+                font-size: 0.65rem;
+            }
+
+            .nav-modern .nav-link i {
+                font-size: 0.65rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .section-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .card-modern {
+                padding: 14px 16px;
+            }
+
+            .card-modern .card-header h3 {
+                font-size: 0.9rem;
+            }
+
+            .grid-modern {
+                grid-template-columns: 1fr;
+            }
+
+            .accordion-modern .accordion-header {
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .btn-modern {
+                padding: 8px 18px;
+                font-size: 0.75rem;
+            }
+
             .panel-content { width: 280px; max-height: 70vh; padding: 14px 14px 18px; }
             .panel-tab { padding: 12px 6px; min-width: 26px; }
             .panel-tab .tab-label { font-size: 0.55rem; }
             .panel-link-btn { font-size: 0.7rem; padding: 8px 12px; }
+
             .floating-panel { transform: translateY(-50%) translateX(-280px); }
             .floating-panel.open { transform: translateY(-50%) translateX(0); }
             .floating-panel-right { transform: translateY(-50%) translateX(300px); }
             .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
             .floating-panel-right .panel-content { width: 280px; }
-            .scroll-top { width: 34px; height: 34px; font-size: 0.8rem; bottom: 16px; right: 16px; }
+
+            .scroll-top {
+                width: 34px;
+                height: 34px;
+                font-size: 0.8rem;
+                bottom: 16px;
+                right: 16px;
+            }
+
             .main-content { padding: 8px 12px 30px; }
         }
 
         @media (max-width: 480px) {
-            .header-brand .logo-icon { width: 32px; height: 32px; font-size: 13px; border-radius: 8px; }
-            .header-brand h1 { font-size: 0.85rem; }
-            .header-brand .subtitle { font-size: 0.6rem; }
-            .nav-modern .nav-link { padding: 4px 8px; font-size: 0.55rem; gap: 3px; }
-            .nav-modern .nav-link i { font-size: 0.55rem; }
-            .main-content { padding: 8px 8px 30px; }
-            .section-title { font-size: 1rem; }
-            .card-modern { padding: 10px 12px; }
-            .accordion-modern .accordion-header { padding: 8px 10px; font-size: 0.7rem; gap: 6px; }
-            .accordion-modern .accordion-content { padding: 0 10px 12px; }
-            .search-box input { padding: 8px 1rem 8px 2.2rem; font-size: 0.8rem; }
+            .header-brand .logo-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+
+            .header-brand h1 {
+                font-size: 0.85rem;
+            }
+
+            .header-brand .subtitle {
+                font-size: 0.6rem;
+            }
+
+            .nav-modern .nav-link {
+                padding: 4px 8px;
+                font-size: 0.55rem;
+                gap: 3px;
+            }
+
+            .nav-modern .nav-link i {
+                font-size: 0.55rem;
+            }
+
+            .main-content {
+                padding: 8px 8px 30px;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            .card-modern {
+                padding: 10px 12px;
+            }
+
+            .accordion-modern .accordion-header {
+                padding: 8px 10px;
+                font-size: 0.7rem;
+                gap: 6px;
+            }
+
+            .accordion-modern .accordion-content {
+                padding: 0 10px 12px;
+            }
+
+            .search-box input {
+                padding: 8px 1rem 8px 2.2rem;
+                font-size: 0.8rem;
+            }
+
             .panel-content { width: 260px; padding: 10px 12px 14px; }
             .panel-tab { padding: 8px 5px; min-width: 22px; }
             .panel-tab .tab-label { font-size: 0.5rem; }
             .panel-link-btn { font-size: 0.65rem; padding: 6px 10px; gap: 5px; }
+
             .floating-panel { transform: translateY(-50%) translateX(-260px); }
             .floating-panel.open { transform: translateY(-50%) translateX(0); }
             .floating-panel-right { transform: translateY(-50%) translateX(280px); }
             .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
             .floating-panel-right .panel-content { width: 260px; }
-            .links-grid { grid-template-columns: 1fr; }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -997,10 +1223,6 @@
 
 <!-- ===== MENU LATERAL FLUTUANTE — ATALHOS (DIREITA) ===== -->
 <div class="floating-panel-right" id="floatingPanelRight">
-    <button class="panel-tab" id="panelToggleRight" aria-label="Abrir/Fechar menu de Atalhos">
-        <i class="fas fa-chevron-left tab-arrow"></i>
-        <span class="tab-label">Atalhos</span>
-    </button>
     <div class="panel-content">
         <div class="panel-header">
             <i class="fas fa-bolt"></i>
@@ -1042,7 +1264,6 @@
             </a>
         </div>
     </div>
-</div>
 
 <!-- ===== HEADER ===== -->
 <header class="header-modern">
@@ -1067,7 +1288,7 @@
     </div>
 </header>
 
-<!-- ===== NAV ===== -->
+    <!-- ===== NAV ===== -->
 <nav class="nav-modern">
     <div class="container">
         <div class="nav-scroll">
@@ -1270,7 +1491,7 @@
         </div>
     </section>
 
-    <!-- ============ FLUXOS ============ -->
+        <!-- ============ FLUXOS ============ -->
     <section id="fluxos" class="section">
         <h2 class="section-title"><i class="fas fa-sitemap"></i> Fluxos de Regulação</h2>
         <p class="section-subtitle">Entenda o processo completo de agendamento de consultas especializadas — NT 25/2025</p>
@@ -1624,7 +1845,7 @@
         </div>
     </section>
 
-    <!-- ============ BLOQUEIO NEUROMUSCULAR ============ -->
+        <!-- ============ BLOQUEIO NEUROMUSCULAR ============ -->
     <section id="bloqueio" class="section">
         <h2 class="section-title"><i class="fas fa-brain"></i> Bloqueio Neuromuscular</h2>
         <p class="section-subtitle">NT 01/2023 — Referenciamento para o Ambulatório de Bloqueio Neuromuscular</p>
@@ -1907,7 +2128,7 @@
         </div>
     </section>
 
-    <!-- ============ INFECTOLOGIA ============ -->
+        <!-- ============ INFECTOLOGIA ============ -->
     <section id="infectologia" class="section">
         <h2 class="section-title"><i class="fas fa-virus"></i> Infectologia SAE Iria Diniz</h2>
         <p class="section-subtitle">NOTA INFORMATIVA 01/2025 — Agendamento Infectologias SAE</p>
@@ -2647,37 +2868,83 @@
 
     // ===== MENU LATERAL DIREITO (ATALHOS) =====
     (function() {
-        const panel = document.getElementById('floatingPanelRight');
-        const toggle = document.getElementById('panelToggleRight');
-        const arrow = toggle.querySelector('.tab-arrow');
-        let isOpen = false;
+        const panelRight = document.getElementById('floatingPanelRight');
+        const toggleRight = document.getElementById('panelToggleRight');
+        const arrowRight = toggleRight.querySelector('.tab-arrow');
+        let isOpenRight = false;
 
-        toggle.addEventListener('click', function() {
-            isOpen = !isOpen;
-            if (isOpen) {
-                panel.classList.add('open');
-                arrow.classList.remove('fa-chevron-left');
-                arrow.classList.add('fa-chevron-right');
+        toggleRight.addEventListener('click', function() {
+            isOpenRight = !isOpenRight;
+            if (isOpenRight) {
+                panelRight.classList.add('open');
+                arrowRight.classList.remove('fa-chevron-left');
+                arrowRight.classList.add('fa-chevron-right');
             } else {
-                panel.classList.remove('open');
-                arrow.classList.remove('fa-chevron-right');
-                arrow.classList.add('fa-chevron-left');
+                panelRight.classList.remove('open');
+                arrowRight.classList.remove('fa-chevron-right');
+                arrowRight.classList.add('fa-chevron-left');
             }
         });
     })();
 
-    // Fecha o painel direito ao clicar em "Links Úteis"
     function closeRightPanel() {
-        const panel = document.getElementById('floatingPanelRight');
-        const toggle = document.getElementById('panelToggleRight');
-        const arrow = toggle.querySelector('.tab-arrow');
-        if (panel.classList.contains('open')) {
-            panel.classList.remove('open');
-            arrow.classList.remove('fa-chevron-right');
-            arrow.classList.add('fa-chevron-left');
-        }
+        const panelRight = document.getElementById('floatingPanelRight');
+        const toggleRight = document.getElementById('panelToggleRight');
+        const arrowRight = toggleRight.querySelector('.tab-arrow');
+        panelRight.classList.remove('open');
+        arrowRight.classList.remove('fa-chevron-right');
+        arrowRight.classList.add('fa-chevron-left');
     }
+
+    // Fecha menus ao clicar fora
+    document.addEventListener('click', function(e) {
+        const panel = document.getElementById('floatingPanel');
+        const panelRight = document.getElementById('floatingPanelRight');
+        if (panel.classList.contains('open') && !panel.contains(e.target)) {
+            panel.classList.remove('open');
+            const arrow = panel.querySelector('.tab-arrow');
+            arrow.classList.remove('fa-chevron-left');
+            arrow.classList.add('fa-chevron-right');
+        }
+        if (panelRight.classList.contains('open') && !panelRight.contains(e.target)) {
+            closeRightPanel();
+        }
+    });
+
+    // ===== BUSCA =====
+    (function() {
+        const input = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearInlineButton');
+        if (!input) return;
+
+        input.addEventListener('input', function() {
+            const term = this.value.toLowerCase().trim();
+            if (term === '') {
+                document.querySelectorAll('.card-modern, .accordion-modern').forEach(el => {
+                    el.classList.remove('search-hidden');
+                });
+                clearBtn.classList.remove('visible');
+                return;
+            }
+            clearBtn.classList.add('visible');
+            document.querySelectorAll('.card-modern, .accordion-modern').forEach(el => {
+                const text = el.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    el.classList.remove('search-hidden');
+                } else {
+                    el.classList.add('search-hidden');
+                }
+            });
+        });
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            input.dispatchEvent(new Event('input'));
+            input.focus();
+        });
+    })();
 </script>
 
 </body>
 </html>
+
