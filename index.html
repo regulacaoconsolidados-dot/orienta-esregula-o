@@ -219,7 +219,7 @@
             position: fixed;
             right: 0;
             top: 50%;
-            transform: translateY(-50%) translateX(340px);
+            transform: translateY(-50%) translateX(100%);
             display: flex;
             flex-direction: row-reverse;
             align-items: stretch;
@@ -247,6 +247,13 @@
 
         .floating-panel-right .panel-tab:hover {
             background: var(--primary-dark);
+        }
+
+        /* ✅ CORREÇÃO: texto da aba "Atalhos" legível de cima para baixo */
+        .floating-panel-right .panel-tab .tab-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(0deg);
         }
 
         .floating-panel-right .panel-tab .tab-arrow {
@@ -991,7 +998,7 @@
             .panel-content { width: 290px; }
             .floating-panel { transform: translateY(-50%) translateX(-290px); }
             .floating-panel.open { transform: translateY(-50%) translateX(0); }
-            .floating-panel-right { transform: translateY(-50%) translateX(310px); }
+            .floating-panel-right { transform: translateY(-50%) translateX(100%); }
             .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
             .floating-panel-right .panel-content { width: 290px; }
             .main-content { padding: 8px 16px 40px; }
@@ -1079,7 +1086,7 @@
 
             .floating-panel { transform: translateY(-50%) translateX(-280px); }
             .floating-panel.open { transform: translateY(-50%) translateX(0); }
-            .floating-panel-right { transform: translateY(-50%) translateX(300px); }
+            .floating-panel-right { transform: translateY(-50%) translateX(100%); }
             .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
             .floating-panel-right .panel-content { width: 280px; }
 
@@ -1154,7 +1161,7 @@
 
             .floating-panel { transform: translateY(-50%) translateX(-260px); }
             .floating-panel.open { transform: translateY(-50%) translateX(0); }
-            .floating-panel-right { transform: translateY(-50%) translateX(280px); }
+            .floating-panel-right { transform: translateY(-50%) translateX(100%); }
             .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
             .floating-panel-right .panel-content { width: 260px; }
 
