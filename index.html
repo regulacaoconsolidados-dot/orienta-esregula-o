@@ -240,22 +240,28 @@
             transform: translateX(-4px);
         }
 
-        .floating-panel-right .panel-tab {
-            border-radius: 12px 0 0 12px;
-            background: var(--primary);
-        }
+.floating-panel-right .panel-tab {
+    border-radius: 12px 0 0 12px;
+    background: var(--primary);
+}
 
-        .floating-panel-right .panel-tab:hover {
-            background: var(--primary-dark);
-        }
+.floating-panel-right .panel-tab:hover {
+    background: var(--primary-dark);
+}
 
-        .floating-panel-right .panel-tab .tab-arrow {
-            transform: rotate(180deg);
-        }
+.floating-panel-right .panel-tab .tab-arrow {
+    transform: rotate(180deg);
+}
 
-        .floating-panel-right.open .panel-tab .tab-arrow {
-            transform: rotate(0deg);
-        }
+.floating-panel-right.open .panel-tab .tab-arrow {
+    transform: rotate(0deg);
+}
+
+.floating-panel-right .panel-tab .tab-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+}
 
         /* ===== HEADER ===== */
         .header-modern {
@@ -1223,6 +1229,10 @@
 
 <!-- ===== MENU LATERAL FLUTUANTE — ATALHOS (DIREITA) ===== -->
 <div class="floating-panel-right" id="floatingPanelRight">
+    <button class="panel-tab" id="panelToggleRight" aria-label="Abrir/Fechar menu de Atalhos">
+        <i class="fas fa-chevron-left tab-arrow"></i>
+        <span class="tab-label">Atalhos</span>
+    </button>
     <div class="panel-content">
         <div class="panel-header">
             <i class="fas fa-bolt"></i>
@@ -1264,6 +1274,7 @@
             </a>
         </div>
     </div>
+</div>
     <button class="panel-tab" id="panelToggleRight" aria-label="Abrir/Fechar menu de Atalhos">
         <i class="fas fa-chevron-left tab-arrow"></i>
         <span class="tab-label">Atalhos</span>
