@@ -70,7 +70,7 @@
             background: var(--primary-dark);
         }
 
-        /* ===== MENU LATERAL FLUTUANTE ===== */
+        /* ===== MENU LATERAL FLUTUANTE (ESQUERDA — NOTAS TÉCNICAS) ===== */
         .floating-panel {
             position: fixed;
             left: 0;
@@ -212,6 +212,49 @@
             letter-spacing: 1.5px;
             text-transform: uppercase;
             white-space: nowrap;
+        }
+
+        /* ===== MENU LATERAL FLUTUANTE (DIREITA — ATALHOS) ===== */
+        .floating-panel-right {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) translateX(340px);
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: stretch;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: drop-shadow(0 8px 32px rgba(0,0,0,0.15));
+        }
+
+        .floating-panel-right.open {
+            transform: translateY(-50%) translateX(0);
+        }
+
+        .floating-panel-right .panel-content {
+            border-radius: 16px 0 0 16px;
+        }
+
+        .floating-panel-right .panel-link-btn:hover {
+            transform: translateX(-4px);
+        }
+
+        .floating-panel-right .panel-tab {
+            border-radius: 12px 0 0 12px;
+            background: var(--primary);
+        }
+
+        .floating-panel-right .panel-tab:hover {
+            background: var(--primary-dark);
+        }
+
+        .floating-panel-right .panel-tab .tab-arrow {
+            transform: rotate(180deg);
+        }
+
+        .floating-panel-right.open .panel-tab .tab-arrow {
+            transform: rotate(0deg);
         }
 
         /* ===== HEADER ===== */
@@ -429,61 +472,6 @@
         .nav-modern .nav-link.active i {
             opacity: 1;
             color: #fff;
-        }
-
-        /* ===== QUICK LINKS ===== */
-        .quick-links-wrapper {
-            max-width: 92%;
-            margin: 6px auto 0;
-            padding: 8px 20px 6px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            background: rgba(10,88,202,0.03);
-            border-radius: 12px;
-            border: 1px solid rgba(10,88,202,0.06);
-        }
-
-        .quick-links-wrapper::-webkit-scrollbar {
-            display: none;
-        }
-
-        .quick-links {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 6px;
-            justify-content: flex-start;
-            padding-bottom: 4px;
-        }
-
-        .quick-link-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 14px;
-            background: var(--white);
-            color: var(--text);
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.25s ease;
-            border: 1px solid #e5e9ef;
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
-        }
-
-        .quick-link-btn:hover {
-            background: var(--primary-light);
-            border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(10,88,202,0.12);
-            color: var(--primary-dark);
-        }
-
-        .quick-link-btn i {
-            font-size: 0.7rem;
-            color: var(--primary);
         }
 
         /* ===== SEARCH ===== */
@@ -1001,6 +989,11 @@
             .header-brand h1 { font-size: 1.2rem; }
             .header-info { font-size: 0.7rem; }
             .panel-content { width: 290px; }
+            .floating-panel { transform: translateY(-50%) translateX(-290px); }
+            .floating-panel.open { transform: translateY(-50%) translateX(0); }
+            .floating-panel-right { transform: translateY(-50%) translateX(310px); }
+            .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
+            .floating-panel-right .panel-content { width: 290px; }
             .main-content { padding: 8px 16px 40px; }
         }
 
@@ -1084,6 +1077,12 @@
             .panel-tab .tab-label { font-size: 0.55rem; }
             .panel-link-btn { font-size: 0.7rem; padding: 8px 12px; }
 
+            .floating-panel { transform: translateY(-50%) translateX(-280px); }
+            .floating-panel.open { transform: translateY(-50%) translateX(0); }
+            .floating-panel-right { transform: translateY(-50%) translateX(300px); }
+            .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
+            .floating-panel-right .panel-content { width: 280px; }
+
             .scroll-top {
                 width: 34px;
                 height: 34px;
@@ -1092,13 +1091,6 @@
                 right: 16px;
             }
 
-            .quick-link-btn {
-                font-size: 0.6rem;
-                padding: 4px 12px;
-            }
-            .quick-link-btn i {
-                font-size: 0.6rem;
-            }
             .main-content { padding: 8px 12px 30px; }
         }
 
@@ -1155,22 +1147,16 @@
                 font-size: 0.8rem;
             }
 
-            .panel-content { width: 280px; padding: 10px 12px 14px; }
+            .panel-content { width: 260px; padding: 10px 12px 14px; }
             .panel-tab { padding: 8px 5px; min-width: 22px; }
             .panel-tab .tab-label { font-size: 0.5rem; }
             .panel-link-btn { font-size: 0.65rem; padding: 6px 10px; gap: 5px; }
 
-            .quick-links-wrapper {
-                padding: 4px 10px 2px;
-            }
-            .quick-link-btn {
-                font-size: 0.55rem;
-                padding: 3px 10px;
-                gap: 3px;
-            }
-            .quick-link-btn i {
-                font-size: 0.55rem;
-            }
+            .floating-panel { transform: translateY(-50%) translateX(-260px); }
+            .floating-panel.open { transform: translateY(-50%) translateX(0); }
+            .floating-panel-right { transform: translateY(-50%) translateX(280px); }
+            .floating-panel-right.open { transform: translateY(-50%) translateX(0); }
+            .floating-panel-right .panel-content { width: 260px; }
 
             .links-grid {
                 grid-template-columns: 1fr;
@@ -1180,7 +1166,7 @@
 </head>
 <body>
 
-<!-- ===== MENU LATERAL FLUTUANTE — NOTAS TÉCNICAS ===== -->
+<!-- ===== MENU LATERAL FLUTUANTE — NOTAS TÉCNICAS (ESQUERDA) ===== -->
 <div class="floating-panel" id="floatingPanel">
     <div class="panel-content">
         <div class="panel-header">
@@ -1235,6 +1221,55 @@
     </button>
 </div>
 
+<!-- ===== MENU LATERAL FLUTUANTE — ATALHOS (DIREITA) ===== -->
+<div class="floating-panel-right" id="floatingPanelRight">
+    <div class="panel-content">
+        <div class="panel-header">
+            <i class="fas fa-bolt"></i>
+            <span>Atalhos</span>
+        </div>
+        <div class="panel-links">
+            <a class="panel-link-btn" href="https://compartilhacmc-commits.github.io/pendenciasgeral/" target="_blank" rel="noopener">
+                <i class="fas fa-exclamation-triangle"></i> Pendências
+            </a>
+            <a class="panel-link-btn" href="https://docs.google.com/spreadsheets/d/1_WJhJQQXcxn0Yucyr_rv_HuKs7wc3p4oeb69oyhoPU4/edit?gid=119359330#gid=119359330" target="_blank" rel="noopener">
+                <i class="fas fa-list-ul"></i> Oferta Teleconsulta
+            </a>
+            <a class="panel-link-btn" href="https://docs.google.com/spreadsheets/d/11X7DQcngdN51yFYodEWBmMCc8Pi-YFbgQ4IQ7Ca93IU/edit?gid=1603937153#gid=1603937153" target="_blank" rel="noopener">
+                <i class="fas fa-list-ul"></i> Consolidado Teleconsulta
+            </a>
+            <a class="panel-link-btn" href="https://docs.google.com/spreadsheets/d/1_WJhJQQXcxn0Yucyr_rv_HuKs7wc3p4oeb69oyhoPU4/edit?gid=0#gid=0" target="_blank" rel="noopener">
+                <i class="fas fa-user-md"></i> Reaproveitamento
+            </a>
+            <a class="panel-link-btn" href="https://docs.google.com/spreadsheets/d/1rdG5GYB9tl57CUchHd_LMAO_qftSD_S4ySH5vernoTk/edit?gid=0#gid=0" target="_blank" rel="noopener">
+                <i class="fas fa-list-ul"></i> Baixa Demanda
+            </a>
+            <a class="panel-link-btn" href="https://compartilhacmc-commits.github.io/profissionaisnarede/" target="_blank" rel="noopener">
+                <i class="fas fa-user-md"></i> Médicos Ativos
+            </a>
+            <a class="panel-link-btn" href="https://docs.google.com/spreadsheets/d/1s_HDG2-eBdYVaHdw_4e2q2ORuUePdZuLJQmIT7Z-esI/edit?pli=1&gid=0#gid=0" target="_blank" rel="noopener">
+                <i class="fas fa-list-ul"></i> Exames Sem Prestador
+            </a>
+            <a class="panel-link-btn" href="https://regulacaoconsolidados-dot.github.io/contatostelefonicoscompletos/" target="_blank" rel="noopener">
+                <i class="fas fa-phone-alt"></i> Guia Telefônico
+            </a>
+            <a class="panel-link-btn" href="https://app.powerbi.com/view?r=eyJrIjoiYTRiZDcyZWYtMzAwNS00NmYyLTk3N2EtYWEwYTk2NTFhMmY1IiwidCI6ImFlODYzMzdlLTU3NWUtNDMzMC05NDc2LTkzZGU2ODJiMDAyMCJ9" target="_blank" rel="noopener">
+                <i class="fas fa-map-marked-alt"></i> Área de Abrangência
+            </a>
+            <a class="panel-link-btn" href="https://portal.contagem.mg.gov.br/nota-tecnica" target="_blank" rel="noopener">
+                <i class="fas fa-file-alt"></i> Notas Técnicas Prefeitura
+            </a>
+            <a class="panel-link-btn" href="#" onclick="navigateTo('linksuteis'); closeRightPanel(); return false;">
+                <i class="fas fa-link"></i> Links Úteis
+            </a>
+        </div>
+    </div>
+    <button class="panel-tab" id="panelToggleRight" aria-label="Abrir/Fechar menu de Atalhos">
+        <i class="fas fa-chevron-left tab-arrow"></i>
+        <span class="tab-label">Atalhos</span>
+    </button>
+</div>
+
 <!-- ===== HEADER ===== -->
 <header class="header-modern">
     <div class="container">
@@ -1279,45 +1314,6 @@
         </div>
     </div>
 </nav>
-
-<!-- ===== QUICK LINKS ===== -->
-<div class="quick-links-wrapper">
-    <div class="quick-links">
-        <a href="https://compartilhacmc-commits.github.io/pendenciasgeral/" class="quick-link-btn" target="_blank">
-            <i class="fas fa-exclamation-triangle"></i> Pendências
-        </a>
-        <a href="https://docs.google.com/spreadsheets/d/1_WJhJQQXcxn0Yucyr_rv_HuKs7wc3p4oeb69oyhoPU4/edit?gid=119359330#gid=119359330" class="quick-link-btn" target="_blank">
-            <i class="fas fa-list-ul"></i> Oferta Teleconsulta
-        </a>
-        <a href="https://docs.google.com/spreadsheets/d/11X7DQcngdN51yFYodEWBmMCc8Pi-YFbgQ4IQ7Ca93IU/edit?gid=1603937153#gid=1603937153" class="quick-link-btn" target="_blank">
-            <i class="fas fa-list-ul"></i> Consolidado Teleconsulta
-        </a>
-        <a href="https://docs.google.com/spreadsheets/d/1_WJhJQQXcxn0Yucyr_rv_HuKs7wc3p4oeb69oyhoPU4/edit?gid=0#gid=0" class="quick-link-btn" target="_blank">
-            <i class="fas fa-user-md"></i> Reaproveitamento
-        </a>
-        <a href="https://docs.google.com/spreadsheets/d/1rdG5GYB9tl57CUchHd_LMAO_qftSD_S4ySH5vernoTk/edit?gid=0#gid=0" class="quick-link-btn" target="_blank">
-            <i class="fas fa-list-ul"></i> Baixa Demanda
-        </a>
-        <a href="https://compartilhacmc-commits.github.io/profissionaisnarede/" class="quick-link-btn" target="_blank">
-            <i class="fas fa-user-md"></i> Médicos Ativos
-        </a>
-        <a href="https://docs.google.com/spreadsheets/d/1s_HDG2-eBdYVaHdw_4e2q2ORuUePdZuLJQmIT7Z-esI/edit?pli=1&gid=0#gid=0" class="quick-link-btn" target="_blank">
-            <i class="fas fa-list-ul"></i> Exames Sem Prestador
-        </a>
-        <a href="https://regulacaoconsolidados-dot.github.io/contatostelefonicoscompletos/" class="quick-link-btn" target="_blank">
-            <i class="fas fa-phone-alt"></i> Guia Telefônico
-        </a>
-        <a href="https://app.powerbi.com/view?r=eyJrIjoiYTRiZDcyZWYtMzAwNS00NmYyLTk3N2EtYWEwYTk2NTFhMmY1IiwidCI6ImFlODYzMzdlLTU3NWUtNDMzMC05NDc2LTkzZGU2ODJiMDAyMCJ9" class="quick-link-btn" target="_blank">
-            <i class="fas fa-map-marked-alt"></i> Área de Abrangência
-        </a>
-        <a href="https://portal.contagem.mg.gov.br/nota-tecnica" class="quick-link-btn" target="_blank">
-            <i class="fas fa-file-alt"></i> Notas Técnicas Prefeitura
-        </a>
-        <a href="#" class="quick-link-btn" onclick="navigateTo('linksuteis'); return false;">
-            <i class="fas fa-link"></i> Links Úteis
-        </a>
-    </div>
-</div>
 
 <!-- ===== SEARCH ===== -->
 <div class="search-section">
@@ -2730,8 +2726,6 @@
                     <span>Endereço das Unidades</span>
                 </a>
                 <a href="https://geoprocessamento.contagem.mg.gov.br/portal/apps/webappviewer/index.html?id=a29dd6c9d5944c51998c3ffa1efe0c70" class="link-button" target="_blank">
-                    <
-                <a href="https://geoprocessamento.contagem.mg.gov.br/portal/apps/webappviewer/index.html?id=a29dd6c9d5944c51998c3ffa1efe0c70" class="link-button" target="_blank">
                     <i class="fas fa-map-pin"></i>
                     <span>Equipamentos da Saúde de Contagem</span>
                 </a>
@@ -2856,6 +2850,7 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
+    // ===== MENU LATERAL ESQUERDO (NOTAS TÉCNICAS) =====
     (function() {
         const panel = document.getElementById('floatingPanel');
         const toggle = document.getElementById('panelToggle');
@@ -2876,120 +2871,84 @@
         });
     })();
 
+    // ===== MENU LATERAL DIREITO (ATALHOS) =====
     (function() {
-        const input = document.getElementById('searchInput');
-        const clearBtn = document.getElementById('clearInlineButton');
-        const allSections = Array.from(document.querySelectorAll('.section'));
-        const blocks = Array.from(document.querySelectorAll('.accordion-content, .card-modern, .links-grid'));
+        const panelRight = document.getElementById('floatingPanelRight');
+        const toggleRight = document.getElementById('panelToggleRight');
+        const arrowRight = toggleRight.querySelector('.tab-arrow');
+        let isOpenRight = false;
 
-        function escapeRegExp(str) {
-            return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        }
-
-        function removeMarks(root) {
-            root.querySelectorAll('mark').forEach(m => {
-                m.replaceWith(document.createTextNode(m.textContent));
-            });
-        }
-
-        function highlightInBlock(block, term) {
-            removeMarks(block);
-            const regex = new RegExp(escapeRegExp(term), 'gi');
-            const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, {
-                acceptNode(node) {
-                    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-                    const tag = node.parentNode?.nodeName.toLowerCase();
-                    if (tag === 'script' || tag === 'style') return NodeFilter.FILTER_REJECT;
-                    return NodeFilter.FILTER_ACCEPT;
-                }
-            });
-            const textNodes = [];
-            while (walker.nextNode()) textNodes.push(walker.currentNode);
-            textNodes.forEach(node => {
-                const value = node.nodeValue;
-                if (!regex.test(value)) return;
-                const frag = document.createDocumentFragment();
-                let lastIndex = 0;
-                regex.lastIndex = 0;
-                let match;
-                while ((match = regex.exec(value)) !== null) {
-                    frag.appendChild(document.createTextNode(value.slice(lastIndex, match.index)));
-                    const mark = document.createElement('mark');
-                    mark.textContent = match[0];
-                    frag.appendChild(mark);
-                    lastIndex = match.index + match[0].length;
-                }
-                frag.appendChild(document.createTextNode(value.slice(lastIndex)));
-                node.parentNode.replaceChild(frag, node);
-            });
-        }
-
-        function applySearch() {
-            const term = input.value.trim();
-            const hasText = term.length > 0;
-            clearBtn.style.display = hasText ? 'flex' : 'none';
-
-            allSections.forEach(s => s.classList.remove('search-hidden'));
-            blocks.forEach(b => b.classList.remove('search-hidden', 'search-match'));
-
-            if (!hasText) {
-                blocks.forEach(b => removeMarks(b));
-                return;
-            }
-
-            const termLower = term.toLowerCase();
-            let firstVisible = null;
-
-            blocks.forEach(block => {
-                const match = block.textContent.toLowerCase().includes(termLower);
-                if (!match) {
-                    block.classList.add('search-hidden');
-                    removeMarks(block);
-                } else {
-                    block.classList.add('search-match');
-                    highlightInBlock(block, term);
-                    if (!firstVisible) firstVisible = block;
-                }
-            });
-
-            allSections.forEach(section => {
-                if (!section.querySelector('.accordion-content:not(.search-hidden), .card-modern:not(.search-hidden), .links-grid:not(.search-hidden)')) {
-                    section.classList.add('search-hidden');
-                }
-            });
-
-            if (firstVisible) {
-                firstVisible.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        }
-
-        input.addEventListener('input', applySearch);
-        clearBtn.addEventListener('click', function() {
-            input.value = '';
-            input.focus();
-            applySearch();
-        });
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                input.value = '';
-                applySearch();
+        toggleRight.addEventListener('click', function() {
+            isOpenRight = !isOpenRight;
+            if (isOpenRight) {
+                panelRight.classList.add('open');
+                arrowRight.classList.remove('fa-chevron-left');
+                arrowRight.classList.add('fa-chevron-right');
+            } else {
+                panelRight.classList.remove('open');
+                arrowRight.classList.remove('fa-chevron-right');
+                arrowRight.classList.add('fa-chevron-left');
             }
         });
     })();
 
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.querySelectorAll('.accordion-content.active').forEach(el => {
-                el.classList.remove('active');
-                const icon = el.previousElementSibling?.querySelector('.accordion-icon');
-                if (icon) icon.classList.remove('active');
-            });
+    function closeRightPanel() {
+        const panelRight = document.getElementById('floatingPanelRight');
+        const toggleRight = document.getElementById('panelToggleRight');
+        const arrowRight = toggleRight.querySelector('.tab-arrow');
+        panelRight.classList.remove('open');
+        arrowRight.classList.remove('fa-chevron-right');
+        arrowRight.classList.add('fa-chevron-left');
+    }
+
+    // Fecha menus ao clicar fora
+    document.addEventListener('click', function(e) {
+        const panel = document.getElementById('floatingPanel');
+        const panelRight = document.getElementById('floatingPanelRight');
+        if (panel.classList.contains('open') && !panel.contains(e.target)) {
+            panel.classList.remove('open');
+            const arrow = panel.querySelector('.tab-arrow');
+            arrow.classList.remove('fa-chevron-left');
+            arrow.classList.add('fa-chevron-right');
+        }
+        if (panelRight.classList.contains('open') && !panelRight.contains(e.target)) {
+            closeRightPanel();
         }
     });
+
+    // ===== BUSCA =====
+    (function() {
+        const input = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearInlineButton');
+        if (!input) return;
+
+        input.addEventListener('input', function() {
+            const term = this.value.toLowerCase().trim();
+            if (term === '') {
+                document.querySelectorAll('.card-modern, .accordion-modern').forEach(el => {
+                    el.classList.remove('search-hidden');
+                });
+                clearBtn.classList.remove('visible');
+                return;
+            }
+            clearBtn.classList.add('visible');
+            document.querySelectorAll('.card-modern, .accordion-modern').forEach(el => {
+                const text = el.textContent.toLowerCase();
+                if (text.includes(term)) {
+                    el.classList.remove('search-hidden');
+                } else {
+                    el.classList.add('search-hidden');
+                }
+            });
+        });
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            input.dispatchEvent(new Event('input'));
+            input.focus();
+        });
+    })();
 </script>
 
 </body>
 </html>
-                        
-    
-    
