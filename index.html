@@ -215,13 +215,13 @@
         }
 
         /* ===== MENU LATERAL FLUTUANTE (DIREITA — ATALHOS) ===== */
-        .floating-panel-right {
+        .floating-panel {
             position: fixed;
-            right: 0;
+            left: 0;
             top: 50%;
-            transform: translateY(-50%) translateX(340px);
+            transform: translateY(-50%) translateX(-320px);
             display: flex;
-            flex-direction: row-reverse;
+            flex-direction: row;
             align-items: stretch;
             z-index: 9999;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
