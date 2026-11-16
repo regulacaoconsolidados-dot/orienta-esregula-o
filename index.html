@@ -215,47 +215,50 @@
         }
 
         /* ===== MENU LATERAL FLUTUANTE (DIREITA — ATALHOS) ===== */
-        .floating-panel-right {
+
+/* ===== MENU LATERAL DIREITO (ATALHOS) ===== */
+
+       .floating-panel-right {
+          --tab-width: 32px;
+
             position: fixed;
             right: 0;
             top: 50%;
-            transform: translateY(-50%) translateX(340px);
+            transform: translateY(-50%) translateX(calc(100% - var(--tab-width)));
             display: flex;
-            flex-direction: row-reverse;
+            flex-direction: row;
             align-items: stretch;
             z-index: 9999;
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             filter: drop-shadow(0 8px 32px rgba(0,0,0,0.15));
-        }
+         }
 
         .floating-panel-right.open {
             transform: translateY(-50%) translateX(0);
-        }
+         }
 
         .floating-panel-right .panel-content {
             border-radius: 16px 0 0 16px;
-        }
+         }
 
-        .floating-panel-right .panel-link-btn:hover {
-            transform: translateX(-4px);
-        }
+         .floating-panel-right .panel-link-btn:hover {
+             transform: translateX(-4px);
+         }
 
-        .floating-panel-right .panel-tab {
-            border-radius: 12px 0 0 12px;
-            background: var(--primary);
-        }
+          .floating-panel-right .panel-tab {
+             width: var(--tab-width);
+             min-width: var(--tab-width);
+             border-radius: 12px 0 0 12px;
+             background: var(--primary);
+         }
 
-        .floating-panel-right .panel-tab:hover {
-            background: var(--primary-dark);
-        }
+         .floating-panel-right .panel-tab:hover {
+              background: var(--primary-dark);
+          }
 
-        .floating-panel-right .panel-tab .tab-arrow {
-            transform: rotate(180deg);
-        }
-
-        .floating-panel-right.open .panel-tab .tab-arrow {
-            transform: rotate(0deg);
-        }
+          .floating-panel-right .panel-tab .tab-arrow {
+                transform: none;
+         }
 
         /* ===== HEADER ===== */
         .header-modern {
@@ -2870,27 +2873,36 @@
             }
         });
     })();
+    
+// ===== MENU LATERAL DIREITO (ATALHOS) =====
+(function() {
+    const panelRight = document.getElementById('floatingPanelRight');
+    const toggleRight = document.getElementById('panelToggleRight');
+    const arrowRight = toggleRight.querySelector('.tab-arrow');
 
-    // ===== MENU LATERAL DIREITO (ATALHOS) =====
-    (function() {
-        const panelRight = document.getElementById('floatingPanelRight');
-        const toggleRight = document.getElementById('panelToggleRight');
-        const arrowRight = toggleRight.querySelector('.tab-arrow');
-        let isOpenRight = false;
+    toggleRight.addEventListener('click', function() {
+        const isOpen = panelRight.classList.toggle('open');
 
-        toggleRight.addEventListener('click', function() {
-            isOpenRight = !isOpenRight;
-            if (isOpenRight) {
-                panelRight.classList.add('open');
-                arrowRight.classList.remove('fa-chevron-left');
-                arrowRight.classList.add('fa-chevron-right');
-            } else {
-                panelRight.classList.remove('open');
-                arrowRight.classList.remove('fa-chevron-right');
-                arrowRight.classList.add('fa-chevron-left');
-            }
-        });
-    })();
+        arrowRight.classList.toggle('fa-chevron-left', !isOpen);
+        arrowRight.classList.toggle('fa-chevron-right', isOpen);
+
+        toggleRight.setAttribute('aria-expanded', isOpen);
+    });
+})();
+
+function closeRightPanel() {
+    const panelRight = document.getElementById('floatingPanelRight');
+    const toggleRight = document.getElementById('panelToggleRight');
+    const arrowRight = toggleRight.querySelector('.tab-arrow');
+
+    panelRight.classList.remove('open');
+
+    arrowRight.classList.remove('fa-chevron-right');
+    arrowRight.classList.add('fa-chevron-left');
+
+    toggleRight.setAttribute('aria-expanded', 'false');
+}
+
 
     function closeRightPanel() {
         const panelRight = document.getElementById('floatingPanelRight');
